@@ -1,0 +1,1293 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guia de Estudo de IA</title>
+<script>try{var t=localStorage.getItem('guia-ia-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Literata:opsz,wght@7..72,500;7..72,700&display=swap">
+<style>
+:root{
+  --bg:#F2F4F7; --surface:#FFFFFF; --surface-2:#E8ECF1; --ink:#141C26; --muted:#556170; --line:#D5DBE3;
+  --accent:#1D4FB8; --accent-soft:#E2E9F9; --accent-ink:#FFFFFF;
+  --hl:#FFE27A; --hl-ink:#141C26;
+  --tp:#17804F; --tp-soft:#DAF1E4; --fp:#A86300; --fp-soft:#FAE9CF; --fn:#B53030; --fn-soft:#F7DCDC;
+  --out:#6A4DAF; --out-soft:#ECE6F8;
+  --series-b:#C2410C;
+  --shadow:0 1px 2px rgba(20,28,38,.06),0 6px 20px rgba(20,28,38,.05);
+  --f-display:"Literata",Georgia,"Times New Roman",serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,"Courier New",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F141A; --surface:#161D26; --surface-2:#1E2732; --ink:#E4E9F0; --muted:#9AA6B5; --line:#2B3542;
+    --accent:#8DB2FF; --accent-soft:#1C2A44; --accent-ink:#0F141A;
+    --hl:#5E4C0C; --hl-ink:#FFF4C9;
+    --tp:#5CD49B; --tp-soft:#123425; --fp:#F0AF52; --fp-soft:#3A2A10; --fn:#F28383; --fn-soft:#3E1B1B;
+    --out:#BBA5F2; --out-soft:#2A2340;
+    --series-b:#FB923C;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F141A; --surface:#161D26; --surface-2:#1E2732; --ink:#E4E9F0; --muted:#9AA6B5; --line:#2B3542;
+  --accent:#8DB2FF; --accent-soft:#1C2A44; --accent-ink:#0F141A;
+  --hl:#5E4C0C; --hl-ink:#FFF4C9;
+  --tp:#5CD49B; --tp-soft:#123425; --fp:#F0AF52; --fp-soft:#3A2A10; --fn:#F28383; --fn-soft:#3E1B1B;
+  --out:#BBA5F2; --out-soft:#2A2340;
+  --series-b:#FB923C;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:var(--accent);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* ---------- layout ---------- */
+.wrap{padding-inline:16px;padding-block:0 80px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);max-width:800px;margin:0 auto;gap:40px}
+@media (min-width:1120px){
+  .layout{grid-template-columns:236px minmax(0,800px);max-width:1100px;gap:56px}
+}
+.side{display:none}
+@media (min-width:1120px){
+  .side{display:block}
+  .side nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 28px);display:flex;flex-direction:column;gap:2px;padding-top:36px}
+  .topnav{display:none}
+}
+.side .navlabel{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px;font-weight:700}
+.side a{display:flex;justify-content:space-between;gap:8px;color:var(--ink);text-decoration:none;padding:5px 10px;border-radius:6px;font-size:.93rem}
+.side a:hover{background:var(--surface-2)}
+.side a.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.side a .pts{color:var(--muted);font-variant-numeric:tabular-nums;font-size:.82rem}
+
+.topnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:8px 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.topnav::-webkit-scrollbar{display:none}
+.topnav a{flex:none;font-size:.86rem;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:4px 11px;border-radius:999px;white-space:nowrap}
+.topnav a.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+@media (min-width:1120px){.topnav{display:none}}
+
+/* ---------- type ---------- */
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(2rem,5vw,2.8rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(1.55rem,3.4vw,1.95rem);font-weight:700}
+h3{font-size:1.25rem;font-weight:700;margin-top:6px}
+h4{font-size:1.05rem;font-weight:700;font-family:var(--f-body)}
+p{margin:0}
+.eyebrow{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.lead{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+mark{background:var(--hl);color:var(--hl-ink);padding:0 .22em;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+ul,ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+li::marker{color:var(--muted)}
+strong{font-weight:700}
+
+/* ---------- sections ---------- */
+section{display:flex;flex-direction:column;gap:18px;padding-top:44px}
+.sec-head{display:flex;flex-direction:column;gap:6px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.block{display:flex;flex-direction:column;gap:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.hero{padding-top:36px;display:flex;flex-direction:column;gap:14px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem}
+
+/* tags & callouts */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.tag.in{background:var(--tp-soft);color:var(--tp)}
+.tag.part{background:var(--fp-soft);color:var(--fp)}
+.tag.out{background:var(--out-soft);color:var(--out)}
+.tag.q{background:var(--accent-soft);color:var(--accent)}
+.call{border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);background:var(--surface)}
+.call .ct{font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700}
+.call.warn{background:var(--fp-soft);border-color:transparent}
+.call.warn .ct{color:var(--fp)}
+.call.out{background:var(--out-soft);border-color:transparent}
+.call.out .ct{color:var(--out)}
+.call.tip{background:var(--accent-soft);border-color:transparent}
+.call.tip .ct{color:var(--accent)}
+.call.ok{background:var(--tp-soft);border-color:transparent}
+.call.ok .ct{color:var(--tp)}
+
+/* points bar */
+.pbar{display:flex;height:40px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.pbar div{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;font-variant-numeric:tabular-nums;color:#fff;min-width:0;white-space:nowrap;overflow:hidden}
+.pbar .p1{background:var(--accent);color:var(--accent-ink)}
+.pbar .p2{background:var(--tp);color:var(--surface)}
+.pbar .p3{background:var(--out);color:var(--surface)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.9rem}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem;font-variant-numeric:tabular-nums}
+th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);font-weight:700}
+td.num,th.num{text-align:right}
+.tbl.compact td,.tbl.compact th{padding:6px 10px}
+
+/* formula */
+.f{font-family:var(--f-mono);font-size:.95rem;display:inline-flex;align-items:center;gap:.45em;flex-wrap:wrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.25}
+.frac > span:first-child{padding:0 .35em 2px}
+.frac > span:last-child{border-top:1.5px solid currentColor;padding:2px .35em 0}
+.calc{font-family:var(--f-mono);font-size:.9rem;background:var(--surface-2);border-radius:8px;padding:12px 14px;overflow-x:auto;white-space:pre;line-height:1.7}
+.fcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.fcard .fn{font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.fcard .note{font-size:.86rem;color:var(--muted)}
+
+/* exam question */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.q-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px}
+.q-num{font-family:var(--f-display);font-size:1.5rem;font-weight:700}
+.q-pts{font-variant-numeric:tabular-nums;font-weight:700;color:var(--muted)}
+.q-stmt{color:var(--muted);font-size:.96rem;border-left:0;padding:10px 14px;background:var(--surface-2);border-radius:8px}
+.ans{display:flex;flex-direction:column;gap:10px}
+.ans h4{color:var(--accent)}
+.vf{display:flex;flex-direction:column;gap:10px}
+.vf-item{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+.vf-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--f-mono)}
+.vf-badge.v{background:var(--tp-soft);color:var(--tp)}
+.vf-badge.f{background:var(--fn-soft);color:var(--fn)}
+
+/* confusion matrix */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.88rem;font-weight:700;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.cm td,.cm th{text-align:right;padding:6px 9px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);min-width:44px}
+.cm th{text-transform:none;letter-spacing:0;font-size:.82rem}
+.cm th.rowh{text-align:left}
+.cm .tot{background:var(--surface-2);color:var(--muted);font-weight:700}
+.cm .diag{font-weight:700}
+.cm td.is-tp{background:var(--tp);color:var(--surface);font-weight:700}
+.cm td.is-fp{background:var(--fp-soft);color:var(--fp);font-weight:700}
+.cm td.is-fn{background:var(--fn-soft);color:var(--fn);font-weight:700}
+.cm td.tot.is-coltot{outline:2px solid var(--fp);outline-offset:-2px;color:var(--fp)}
+.cm td.tot.is-rowtot{outline:2px solid var(--fn);outline-offset:-2px;color:var(--fn)}
+.cm .corner{font-size:.72rem;text-align:left;color:var(--muted);line-height:1.3}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.88rem}
+.keyrow span{display:inline-flex;align-items:center;gap:6px}
+.keyrow i{width:14px;height:14px;border-radius:3px;display:inline-block}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.res .r{background:var(--surface-2);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.res .r .k{font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.res .r .v{font-family:var(--f-mono);font-size:.92rem}
+.res .r .big{font-family:var(--f-display);font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* threshold sim */
+.sim-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+.sim-top label{font-weight:700}
+.sim-top input[type=range]{flex:1 1 220px;accent-color:var(--accent)}
+.thv{font-family:var(--f-mono);font-weight:600;font-size:1.1rem;min-width:4.5ch}
+.imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.img{border-radius:8px;padding:8px 10px;border:1px solid var(--line);display:flex;flex-direction:column;gap:2px;font-size:.82rem;background:var(--surface)}
+.img b{font-family:var(--f-mono);font-size:.95rem}
+.img .o{font-weight:700;font-size:.72rem;letter-spacing:.06em}
+.img.TP{background:var(--tp-soft);border-color:transparent}.img.TP .o{color:var(--tp)}
+.img.FP{background:var(--fp-soft);border-color:transparent}.img.FP .o{color:var(--fp)}
+.img.FN{background:var(--fn-soft);border-color:transparent}.img.FN .o{color:var(--fn)}
+.img.TN .o{color:var(--muted)}
+
+/* chart */
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto}
+.chart svg{display:block;width:100%;height:auto;min-width:320px}
+.chart .ax text{fill:var(--muted);font-family:var(--f-body);font-size:12px}
+.chart .grid line{stroke:var(--line);stroke-width:1}
+
+/* details */
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+details > summary{cursor:pointer;padding:12px 16px;font-weight:700;list-style:none;display:flex;gap:10px;align-items:baseline}
+details > summary::-webkit-details-marker{display:none}
+details > summary::before{content:"+";font-family:var(--f-mono);color:var(--accent);width:1ch;flex:none}
+details[open] > summary::before{content:"−"}
+details .dbody{padding:0 16px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.practice{display:flex;flex-direction:column;gap:8px}
+.practice details > summary{font-weight:400}
+.practice details > summary .qn{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+
+/* timeline */
+.tl{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);margin-left:6px}
+.tl .ev{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:8px 0 8px 18px;position:relative}
+.tl .ev::before{content:"";position:absolute;left:-7px;top:15px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.tl .yr{font-family:var(--f-mono);font-weight:600;color:var(--accent);font-size:.9rem}
+@media (max-width:520px){.tl .ev{grid-template-columns:1fr;gap:2px}}
+
+/* checklist */
+.check{display:flex;flex-direction:column;gap:4px}
+.check label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;cursor:pointer}
+.check label:hover{background:var(--surface-2)}
+.check input{margin-top:4px;accent-color:var(--tp);width:17px;height:17px;flex:none}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+.progress{height:8px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.progress div{height:100%;background:var(--tp);width:0;transition:width .2s}
+
+.foot{padding-top:48px;color:var(--muted);font-size:.88rem}
+.theme-btn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;font:inherit;font-size:.88rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow);cursor:pointer}
+.theme-btn:hover{border-color:var(--accent)}
+.theme-btn .dot{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="layout">
+
+<aside class="side" aria-label="Sumário">
+  <nav id="sidenav">
+    <div class="navlabel">Visão geral</div>
+    <a href="#visao">Resumo da prova</a>
+    <a href="#mapa">Prova × slides</a>
+    <a href="#plano">Plano de estudo</a>
+    <a href="#prova">Prova resolvida</a>
+    <div class="navlabel">Guia por tema</div>
+    <a href="#metricas">Métricas <span class="pts">5,0</span></a>
+    <a href="#clustering">Não supervisionado <span class="pts">2,5</span></a>
+    <a href="#generalizacao">Supervisionado e overfitting <span class="pts">2,5</span></a>
+    <a href="#estatistica">Estatística <span class="pts">0</span></a>
+    <a href="#introducao">Introdução e história <span class="pts">0</span></a>
+    <div class="navlabel">Revisão</div>
+    <a href="#formulas">Formulário e erratas</a>
+    <a href="#treino">Questões de treino</a>
+    <a href="#checklist">Checklist</a>
+  </nav>
+</aside>
+
+<main>
+<nav class="topnav" id="topnav" aria-label="Seções">
+  <a href="#visao">Resumo</a><a href="#mapa">Prova × slides</a><a href="#plano">Plano</a><a href="#prova">Prova resolvida</a><a href="#metricas">Métricas</a><a href="#clustering">Clustering</a><a href="#generalizacao">Overfitting</a><a href="#estatistica">Estatística</a><a href="#introducao">Introdução</a><a href="#formulas">Fórmulas</a><a href="#treino">Treino</a><a href="#checklist">Checklist</a>
+</nav>
+
+<!-- ================= VISÃO GERAL ================= -->
+<section id="visao" class="hero">
+  <div class="eyebrow">Inteligência Artificial · Prof. Jairo Lucas</div>
+  <h1>Guia de Estudo de IA</h1>
+  <p class="lead">A prova passada cruzada com os quatro arquivos de slides: o que caiu, de onde saiu, como resolver cada questão e o que treinar para a próxima.</p>
+  <div class="meta"><span>7 questões</span><span>10 pontos</span><span>4 arquivos de slides analisados (01, 02, 04 e Não supervisionado)</span></div>
+
+  <div class="panel">
+    <h4>Onde estavam os 10 pontos da prova passada</h4>
+    <div class="pbar" role="img" aria-label="Métricas 5 pontos, Não supervisionado 2,5 pontos, fora dos slides 2,5 pontos">
+      <div class="p1" style="flex:5">Métricas · 5,0</div>
+      <div class="p2" style="flex:2.5">Clustering · 2,5</div>
+      <div class="p3" style="flex:2.5">Fora · 2,5</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>Métricas (Q1, Q4, Q7)</span>
+      <span><i style="background:var(--tp)"></i>Não supervisionado (Q5, metade da Q2, 2 itens da Q6)</span>
+      <span><i style="background:var(--out)"></i>Fora dos slides enviados (Q3, metade da Q2, 4 itens da Q6)</span>
+    </div>
+    <p class="small muted">Estatística (02) e Introdução (01) não tiveram questão na prova passada. Continuam no guia porque podem cair em V/F ou em questões conceituais.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="call tip">
+      <div class="ct">O padrão mais importante</div>
+      <p>O professor <strong>reaproveitou os dados dos slides</strong>. A matriz de confusão da Q7 é a do slide 18 de Métricas, e os clusters da Q5 são os do slide 34 de Não supervisionado. Refaça esses exemplos com outras classes e outros clusters.</p>
+    </div>
+    <div class="call out">
+      <div class="ct">Falta um arquivo</div>
+      <p>Overfitting, underfitting e divisão treino/validação/teste valeram 2,5 pontos e <strong>não aparecem em nenhum dos 4 arquivos</strong>. A numeração pula do 02 para o 04, então provavelmente existe um slide 03 (aprendizado supervisionado). A seção <a href="#generalizacao">Supervisionado e overfitting</a> cobre esse conteúdo com base no que costuma ser cobrado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MAPA ================= -->
+<section id="mapa">
+  <div class="sec-head">
+    <div class="eyebrow">Relação prova × slides</div>
+    <h2>De onde saiu cada questão</h2>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Questão</th><th class="num">Pts</th><th>Assunto cobrado</th><th>Onde está nos slides</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Q1</strong><br><span class="small muted">maçãs defeituosas</span></td><td class="num">1,5</td><td>Curva Precision-Recall de dois modelos; escolher o melhor; métrica prioritária além do AP</td><td><strong>04 Métricas</strong>: slide 5 (threshold), 9–13 (precision e recall), 25–31 (curva PR e AP), 32 (mAP)</td><td><span class="tag in">Nos slides</span></td></tr>
+        <tr><td><strong>Q2</strong><br><span class="small muted">conceitual</span></td><td class="num">1,0</td><td>Aprendizado supervisionado × não supervisionado, características e exemplos</td><td><strong>Não supervisionado</strong>: slides 3, 10–11. Supervisionado só aparece em exemplos (04 Métricas slide 18; 02 Estatística slides 21–34)</td><td><span class="tag part">Parcial</span></td></tr>
+        <tr><td><strong>Q3</strong><br><span class="small muted">conceitual</span></td><td class="num">1,0</td><td>Overfitting e underfitting</td><td>Não está nos 4 arquivos. Tangencia: 01 Introdução slide 72 (Dropout como regularização) e 81 (dados de teste vs. treino)</td><td><span class="tag out">Fora</span></td></tr>
+        <tr><td><strong>Q4</strong><br><span class="small muted">reconhecimento facial</span></td><td class="num">2,0</td><td>Falsos negativos, aumento do threshold, efeito em precision e recall</td><td><strong>04 Métricas</strong>: slides 4 (TP/FP/TN/FN), 5 (threshold), 9–15, 25 (“todas as métricas variam com o limiar”), 27 (tabela threshold × P × R)</td><td><span class="tag in">Nos slides</span></td></tr>
+        <tr><td><strong>Q5</strong><br><span class="small muted">divisivo</span></td><td class="num">1,5</td><td>Centroide, SSE de cada cluster, qual cluster dividir</td><td><strong>Não supervisionado</strong>: slides 19–21 (algoritmo e SSE), 28–29 (centroide e SSE do C0), 34 (<mark>mesmos clusters da prova</mark>)</td><td><span class="tag in">Nos slides</span></td></tr>
+        <tr><td><strong>Q6</strong><br><span class="small muted">V ou F</span></td><td class="num">1,5</td><td>4 itens sobre overfitting e divisão de dados; 2 itens sobre o método divisivo</td><td>Itens 5 e 6: <strong>Não supervisionado</strong> slides 17, 19–21. Itens 1 a 4: fora dos arquivos</td><td><span class="tag part">Parcial</span></td></tr>
+        <tr><td><strong>Q7</strong><br><span class="small muted">matriz de confusão</span></td><td class="num">1,5</td><td>Precision, recall e F1 da classe SD</td><td><strong>04 Métricas</strong>: slides 17–23 (<mark>mesma matriz do slide 18</mark>; slides 19–21 fazem HF, AN e BS)</td><td><span class="tag in">Nos slides</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tbl compact">
+    <table>
+      <thead><tr><th>Arquivo de slides</th><th class="num">Pontos na prova passada</th><th>Peso para estudar</th></tr></thead>
+      <tbody>
+        <tr><td>04 – Métricas de classificação (36 slides)</td><td class="num">5,0</td><td><strong>Máximo.</strong> Cálculo garantido.</td></tr>
+        <tr><td>Aprendizado NÃO supervisionado (37 slides)</td><td class="num">2,5</td><td><strong>Alto.</strong> Cálculo de centroide e SSE, teoria do divisivo.</td></tr>
+        <tr><td>(provável 03 – Supervisionado, não enviado)</td><td class="num">2,5</td><td><strong>Alto.</strong> Conceitos de generalização.</td></tr>
+        <tr><td>02 – Estatística (35 slides)</td><td class="num">0</td><td>Médio. Variância, normalização e regressão podem virar cálculo.</td></tr>
+        <tr><td>01 – Introdução (88 slides)</td><td class="num">0</td><td>Médio-baixo. Bom para V/F e questões discursivas curtas.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= PLANO ================= -->
+<section id="plano">
+  <div class="sec-head">
+    <div class="eyebrow">Ordem sugerida, da maior para a menor prioridade</div>
+    <h2>Plano de estudo</h2>
+  </div>
+  <ol>
+    <li><strong>Matriz de confusão multiclasse.</strong> Saber tirar TP, FP e FN de qualquer classe e calcular precision, recall e F1. Use o <a href="#cm">explorador da matriz</a> e faça todas as 8 classes. <span class="tag q">Q7</span></li>
+    <li><strong>Threshold × precision × recall.</strong> Entender o que acontece com FP e FN quando o limiar sobe ou desce, e qual métrica priorizar em cada cenário. Use o <a href="#sim">simulador de threshold</a>. <span class="tag q">Q4</span> <span class="tag q">Q1b</span></li>
+    <li><strong>Curva PR, AP e mAP.</strong> Montar a tabela, calcular AP pelo método do professor e comparar modelos. <span class="tag q">Q1a</span></li>
+    <li><strong>Hierárquico divisivo.</strong> Matriz de dissimilaridade (distância ao quadrado), escolha de p1 e p2, divisão, centroide, SSE, escolha do cluster pelo maior SSE. Diferença para o aglomerativo e tipos de ligação. <span class="tag q">Q5</span> <span class="tag q">Q6</span></li>
+    <li><strong>Supervisionado × não supervisionado, overfitting, underfitting, divisão treino/validação/teste.</strong> Respostas discursivas prontas na seção própria. <span class="tag q">Q2</span> <span class="tag q">Q3</span> <span class="tag q">Q6</span></li>
+    <li><strong>Estatística:</strong> variância com n−1, desvio padrão, normalização min-max, regressão linear (m e b).</li>
+    <li><strong>Introdução:</strong> 4 abordagens de IA, teste de Turing, ELIZA, IA fraca × AGI × superinteligência, linha do tempo (perceptron, XOR, invernos, AlexNet).</li>
+  </ol>
+  <div class="call tip">
+    <div class="ct">Como responder as questões de cálculo</div>
+    <ul>
+      <li>Escreva a fórmula, substitua os números e só então dê o resultado. O professor mostra essa sequência em todos os slides.</li>
+      <li>Use 3 casas decimais e dê também a porcentagem (0,657 = 65,7%), como nos slides.</li>
+      <li>Nas questões de “justifique”, cite o conceito pelo nome (FN, FP, recall, SSE) e diga o efeito na prática (quem é barrado, qual fruta passa).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= PROVA RESOLVIDA ================= -->
+<section id="prova">
+  <div class="sec-head">
+    <div class="eyebrow">Gabarito comentado</div>
+    <h2>Prova passada resolvida</h2>
+  </div>
+
+  <!-- Q1 -->
+  <article class="q" id="q1">
+    <div class="q-head"><span class="q-num">Q1</span><span class="q-pts">1,5 pt</span><span class="tag in">04 Métricas · slides 25–31</span></div>
+    <div class="q-stmt">Uma fábrica testa dois modelos para identificar <strong>maçãs defeituosas</strong>. São dadas as curvas Precision-Recall (threshold de 0,1 a 1,0). a) Qual modelo apresenta melhor desempenho geral? Justifique. b) Se o objetivo for evitar a aprovação de frutas defeituosas, qual métrica deveria ser priorizada além do AP?</div>
+    <div class="tbl compact">
+      <table>
+        <thead><tr><th class="num">Threshold</th><th class="num">Recall A</th><th class="num">Precision A</th><th class="num">Recall B</th><th class="num">Precision B</th></tr></thead>
+        <tbody id="q1table"></tbody>
+      </table>
+    </div>
+    <div class="chart">
+      <svg id="prchart" viewBox="0 0 540 310" role="img" aria-label="Curvas precision-recall dos modelos A e B"></svg>
+      <div class="legend" style="padding:6px 4px 0">
+        <span><i style="background:var(--accent)"></i>Modelo A</span>
+        <span><i style="background:var(--series-b)"></i>Modelo B</span>
+      </div>
+    </div>
+    <div class="ans">
+      <h4>a) Resposta: Modelo A</h4>
+      <p>Comparando threshold a threshold, o Modelo A tem <mark>recall maior ou igual e precision maior que o B em todos os limiares</mark>. Exemplo em 0,5: A tem R = 0,60 e P = 0,80; B tem R = 0,50 e P = 0,75. Qualquer ponto de operação que a fábrica escolher, A detecta mais maçãs defeituosas e erra menos quando acusa um defeito. Por isso sua curva PR tem área maior, ou seja, <strong>AP maior</strong> (AP resume precision e recall em todos os thresholds numa única métrica, slide 26).</p>
+      <details>
+        <summary>Se a questão pedir o AP calculado</summary>
+        <div class="dbody">
+          <p>Somando <span class="mono">ΔRecall × Precision</span> desde recall 0 (padrão da literatura):</p>
+          <div class="calc">AP(A) = 0,1×0,50 + 0,1×(0,55+0,65+0,70+0,75+0,80+0,85+0,92+0,95+1,00)
+      = 0,050 + 0,717 = 0,767
+AP(B) = 0,05×0,40 + 0,05×0,45 + 0,1×(0,55+0,65+0,70+0,75+0,80+0,88)
+        + 0,15×0,90 + 0,15×0,95
+      = 0,020 + 0,0225 + 0,433 + 0,135 + 0,1425 = 0,753</div>
+          <div class="call warn">
+            <div class="ct">Pegadinha</div>
+            <p>No método dos slides o professor começa a somar no <em>primeiro</em> valor de recall e não soma a faixa de 0 até ele. Aplicado aqui, dá A = 0,717 e B = 0,733, porque a curva de B começa em recall 0,05 e ganha uma faixa extra. As curvas quase coincidem entre recall 0,2 e 0,6. Na prova, a justificativa mais segura é a comparação threshold a threshold. Se calcular o AP, diga qual método usou.</p>
+          </div>
+        </div>
+      </details>
+      <h4>b) Resposta: Recall (sensibilidade) da classe “defeituosa”</h4>
+      <p>A classe positiva é “maçã defeituosa”. Aprovar uma maçã defeituosa é um <strong>falso negativo</strong> (defeituosa classificada como boa). O recall = TP / (TP + FN) mede quantas das defeituosas o modelo consegue pegar, então <mark>maximizar o recall minimiza as frutas defeituosas aprovadas</mark>. Na prática, escolhe-se um threshold mais baixo (no Modelo A, threshold 0,1 dá recall 1,00). O custo é descartar algumas maçãs boas (FP), que é o erro mais barato nesse caso. Slide 12: recall é usado “quando é crítico identificar todos os exemplos positivos”.</p>
+    </div>
+  </article>
+
+  <!-- Q2 -->
+  <article class="q" id="q2">
+    <div class="q-head"><span class="q-num">Q2</span><span class="q-pts">1,0 pt</span><span class="tag part">Não supervisionado · slides 3, 10–11</span></div>
+    <div class="q-stmt">Explique o que é aprendizado supervisionado e não supervisionado. Cite as principais características e dê um exemplo de uso de cada um.</div>
+    <div class="ans">
+      <div class="tbl compact">
+        <table>
+          <thead><tr><th></th><th>Supervisionado</th><th>Não supervisionado</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dados</strong></td><td>Rotulados: cada exemplo vem com a resposta correta (ground truth)</td><td>Sem rótulos: a resposta não é conhecida antecipadamente</td></tr>
+            <tr><td><strong>Objetivo</strong></td><td>Aprender a mapear entrada → saída para prever ou classificar novos dados</td><td>Descobrir estruturas, padrões ocultos e relações inerentes entre os dados</td></tr>
+            <tr><td><strong>Tarefas</strong></td><td>Classificação (classe) e regressão (valor numérico)</td><td>Agrupamento (clustering), por similaridade/dissimilaridade</td></tr>
+            <tr><td><strong>Avaliação</strong></td><td>Compara a previsão com o rótulo: accuracy, precision, recall, F1, matriz de confusão</td><td>Não há resposta certa para comparar; usa medidas internas como o SSE e a interpretação de um especialista (fase final do KDD)</td></tr>
+            <tr><td><strong>Exemplo</strong></td><td>Classificar mamões em sadio ou doenças a partir de imagens rotuladas por especialistas (slide 18 de Métricas); filtro de spam; prever a nota pelas horas de estudo (regressão, Estatística)</td><td>Agrupar alunos por idade, peso e altura com o método hierárquico divisivo (slides 23–34); segmentar clientes por perfil de compra</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Frase-chave do slide 3: “em vez de prever ou classificar dados, o aprendizado não supervisionado está mais interessado em descobrir a relação inerente entre os dados”.</p>
+    </div>
+  </article>
+
+  <!-- Q3 -->
+  <article class="q" id="q3">
+    <div class="q-head"><span class="q-num">Q3</span><span class="q-pts">1,0 pt</span><span class="tag out">Fora dos slides enviados</span></div>
+    <div class="q-stmt">O que é overfitting e underfitting?</div>
+    <div class="ans">
+      <p><strong>Overfitting (sobreajuste):</strong> o modelo se ajusta demais aos dados de treino, “decorando” inclusive ruídos e particularidades. Tem <mark>erro baixo no treino e erro alto no teste</mark>, ou seja, não generaliza para dados novos. Causas comuns: modelo complexo demais, poucos dados ou pouca variedade de exemplos, treino longo demais, avaliar com os próprios dados de treino. Como evitar: mais dados e mais variados, regularização (o Dropout da AlexNet, slide 72 da Introdução), early stopping, modelo mais simples, separação treino/validação/teste, validação cruzada.</p>
+      <p><strong>Underfitting (subajuste):</strong> o modelo é simples demais e não captura o padrão nem nos dados de treino. Tem <mark>erro alto no treino e no teste</mark>. Exemplo dos slides: um perceptron de uma camada tentando separar o XOR com uma única reta (Introdução, slides 61–64). Como evitar: modelo mais complexo (ex.: perceptron multicamadas), mais atributos relevantes, treinar mais.</p>
+      <p class="small muted">Resumo para decorar: overfitting = vai bem no treino e mal no teste; underfitting = vai mal nos dois.</p>
+    </div>
+  </article>
+
+  <!-- Q4 -->
+  <article class="q" id="q4">
+    <div class="q-head"><span class="q-num">Q4</span><span class="q-pts">2,0 pts</span><span class="tag in">04 Métricas · slides 4, 5, 9–15, 25</span></div>
+    <div class="q-stmt">Um sistema de reconhecimento facial para controle de acesso em uma escola apresenta alta taxa de <strong>falsos negativos</strong>. Um integrante sugeriu usar um <strong>threshold maior</strong>. a) A recomendação é apropriada? Por quê? (b não aparece nas fotos) c) Como essa recomendação afeta o Precision e o Recall?</div>
+    <div class="ans">
+      <p class="small muted">Classe positiva: “rosto reconhecido como pessoa autorizada”. Falso negativo = aluno ou funcionário autorizado que o sistema não reconhece e fica barrado.</p>
+      <h4>a) Não é apropriada</h4>
+      <p>Aumentar o threshold exige uma probabilidade maior para classificar como positivo. O modelo passa a dizer “positivo” menos vezes, e casos que antes eram TP (pessoa autorizada com probabilidade 0,6, por exemplo) viram FN. <mark>Um threshold maior aumenta os falsos negativos</mark>, piorando exatamente o problema. Para reduzir FN, o correto é <strong>diminuir</strong> o threshold (ou melhorar o modelo e os dados de treino).</p>
+      <h4>b) Item não visível nas fotos</h4>
+      <p>Ficou na quebra de página. As variações mais prováveis são:</p>
+      <ul>
+        <li><em>“O que deveria ser feito?”</em> Diminuir o threshold, aceitando mais FP (pessoas não autorizadas liberadas), ou melhorar o modelo (mais fotos por pessoa, ângulos e iluminação variados).</li>
+        <li><em>“O que acontece com os falsos positivos?”</em> Com threshold maior, os FP diminuem: menos pessoas não autorizadas entram.</li>
+      </ul>
+      <h4>c) Precision tende a subir, Recall cai</h4>
+      <div class="calc">Threshold ↑  →  menos previsões positivas
+FP ↓  →  Precision = TP / (TP + FP)  tende a ↑   (quando libera, quase sempre acerta)
+FN ↑  →  Recall    = TP / (TP + FN)  ↓          (mais autorizados ficam barrados)</div>
+      <p>É o trade-off entre precision e recall (slide 25: “todas estas métricas variam de acordo com o limiar”). Veja no <a href="#sim">simulador</a>: subindo o threshold de 0,50 para 0,95, a precision vai de 0,667 para 1,0 e o recall cai de 0,8 para 0,2. A precision nem sempre sobe a cada passo (por isso “tende a”), mas o recall nunca sobe quando o threshold aumenta.</p>
+    </div>
+  </article>
+
+  <!-- Q5 -->
+  <article class="q" id="q5">
+    <div class="q-head"><span class="q-num">Q5</span><span class="q-pts">1,5 pt</span><span class="tag in">Não supervisionado · slides 19–21, 28–29, 34</span></div>
+    <div class="q-stmt">Considerando os clusters abaixo e o modelo hierárquico divisivo: a) qual o valor do centroide de cada cluster? b) qual o SSE de cada cluster? c) qual cluster deve ser escolhido para uma nova divisão? Justifique. <br><span class="mono">SSE = Σ<sub>j</sub> Σ<sub>x∈Cj</sub> ‖x − μ<sub>j</sub>‖²</span></div>
+    <div class="grid2">
+      <div class="tbl compact"><table>
+        <thead><tr><th>Cluster 0</th><th class="num">Idade</th><th class="num">Peso</th><th class="num">Altura</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td class="num">25</td><td class="num">56</td><td class="num">160</td></tr>
+          <tr><td>F</td><td class="num">30</td><td class="num">65</td><td class="num">150</td></tr>
+          <tr><td>G</td><td class="num">27</td><td class="num">60</td><td class="num">145</td></tr>
+          <tr><td><strong>Centroide</strong></td><td class="num"><strong>27,33</strong></td><td class="num"><strong>60,33</strong></td><td class="num"><strong>151,67</strong></td></tr>
+        </tbody></table></div>
+      <div class="tbl compact"><table>
+        <thead><tr><th>Cluster 2</th><th class="num">Idade</th><th class="num">Peso</th><th class="num">Altura</th></tr></thead>
+        <tbody>
+          <tr><td>D</td><td class="num">60</td><td class="num">90</td><td class="num">190</td></tr>
+          <tr><td>E</td><td class="num">32</td><td class="num">100</td><td class="num">175</td></tr>
+          <tr><td>H</td><td class="num">45</td><td class="num">65</td><td class="num">190</td></tr>
+          <tr><td><strong>Centroide</strong></td><td class="num"><strong>45,67</strong></td><td class="num"><strong>85,00</strong></td><td class="num"><strong>185,00</strong></td></tr>
+        </tbody></table></div>
+    </div>
+    <div class="ans">
+      <h4>a) Centroides (média de cada atributo)</h4>
+      <div class="calc">C0: idade (25+30+27)/3 = 82/3 = 27,33   peso 181/3 = 60,33   altura 455/3 = 151,67
+C2: idade (60+32+45)/3 = 137/3 = 45,67  peso 255/3 = 85,00   altura 555/3 = 185,00</div>
+      <h4>b) SSE (distância ao quadrado de cada ponto até o centroide, somada; sem raiz)</h4>
+      <div class="calc">C0
+d²(A) = (25−27,33)² + (56−60,33)² + (160−151,67)² = 5,44 + 18,78 + 69,44 =  93,67
+d²(F) = (30−27,33)² + (65−60,33)² + (150−151,67)² = 7,11 + 21,78 +  2,78 =  31,67
+d²(G) = (27−27,33)² + (60−60,33)² + (145−151,67)² = 0,11 +  0,11 + 44,44 =  44,67
+SSE(C0) = 93,67 + 31,67 + 44,67 = <mark>170,00</mark>
+
+C2
+d²(D) = (60−45,67)² + (90−85)²  + (190−185)² = 205,44 +  25 +  25 = 255,44
+d²(E) = (32−45,67)² + (100−85)² + (175−185)² = 186,78 + 225 + 100 = 511,78
+d²(H) = (45−45,67)² + (65−85)²  + (190−185)² =   0,44 + 400 +  25 = 425,44
+SSE(C2) = 255,44 + 511,78 + 425,44 = <mark>1192,67</mark></div>
+      <h4>c) Cluster 2</h4>
+      <p>O critério do divisivo (passo 8, slide 21) é escolher <strong>o cluster com maior SSE</strong>. SSE(C2) = 1192,67 é muito maior que SSE(C0) = 170,00, o que indica que os elementos de C2 estão mais espalhados em torno do centroide, ou seja, o cluster é menos homogêneo e é o que mais se beneficia de uma nova divisão.</p>
+      <div class="call warn">
+        <div class="ct">Errata do slide</div>
+        <p>O slide 28 mostra o centroide de C0 como 27,22 e o slide 29 usa 60,22 no peso, chegando a SSE = 178,73. As contas corretas dão 27,33, 60,33 e <strong>SSE = 170,00</strong>. Mostre o cálculo completo para garantir a nota do método.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- Q6 -->
+  <article class="q" id="q6">
+    <div class="q-head"><span class="q-num">Q6</span><span class="q-pts">1,5 pt</span><span class="tag part">Itens 5 e 6 nos slides · 1 a 4 fora</span></div>
+    <div class="q-stmt">Marque Verdadeiro (V) ou Falso (F).</div>
+    <div class="vf">
+      <div class="vf-item"><div class="vf-badge v">V</div><div><strong>O overfitting pode ocorrer se não houver separação adequada entre treino e teste.</strong><br><span class="muted">Sem separação o modelo é avaliado nos dados que já decorou: o sobreajuste acontece e passa despercebido, e não há validação para ajustar ou parar o treino. É a resposta mais provável do gabarito.</span></div></div>
+      <div class="vf-item"><div class="vf-badge f">F</div><div><strong>Normalmente, utiliza-se 70% para teste, 15% para treino e 15% para validação.</strong><br><span class="muted">Inverteram: o usual é <mark>70% treino, 15% validação, 15% teste</mark>. O treino fica com a maior parte.</span></div></div>
+      <div class="vf-item"><div class="vf-badge v">V</div><div><strong>É incorreto usar os mesmos dados para treinamento e teste.</strong><br><span class="muted">O teste precisa de dados que o modelo nunca viu; caso contrário a avaliação fica otimista e não mede a generalização.</span></div></div>
+      <div class="vf-item"><div class="vf-badge f">F</div><div><strong>Conjuntos com muita variabilidade de exemplos podem causar o overfitting.</strong><br><span class="muted">Variedade de exemplos ajuda a generalizar. O overfitting vem de poucos dados, pouca variabilidade ou modelo complexo demais.</span></div></div>
+      <div class="vf-item"><div class="vf-badge v">V</div><div><strong>O método divisivo inicia com todos os elementos em um único cluster.</strong><br><span class="muted">Slides 17 e 19. O aglomerativo é o contrário: cada elemento começa como um cluster isolado.</span></div></div>
+      <div class="vf-item"><div class="vf-badge f">F</div><div><strong>O divisivo utiliza os dois elementos mais distantes para decidir qual cluster deve ser novamente dividido.</strong><br><span class="muted">Os dois mais distantes (p1 e p2) servem para <em>dividir</em> o cluster atual (passos 2–5, slide 20). A escolha de <em>qual</em> cluster dividir é pelo <mark>maior SSE</mark> (passo 8, slide 21).</span></div></div>
+    </div>
+  </article>
+
+  <!-- Q7 -->
+  <article class="q" id="q7">
+    <div class="q-head"><span class="q-num">Q7</span><span class="q-pts">1,5 pt</span><span class="tag in">04 Métricas · slides 17–23</span></div>
+    <div class="q-stmt">Dada a matriz de confusão (a mesma do slide 18), calcule para a classe <strong>SD</strong>: a) Precision b) Recall c) F1-score.</div>
+    <div class="ans">
+      <p>Na matriz do professor, as <strong>linhas são o real</strong> (Ground Truth) e as <strong>colunas são a previsão</strong> (Human Expert).</p>
+      <div class="calc">TP = célula SD×SD                       = 44
+FP = total da COLUNA SD − TP  = 67 − 44  = 23   (23 HF previstos como SD)
+FN = total da LINHA SD − TP   = 115 − 44 = 71   (62 viraram HF, 9 viraram PS)
+
+a) Precision = 44 / (44 + 23) = 44 / 67  = <mark>0,657 = 65,7%</mark>
+b) Recall    = 44 / (44 + 71) = 44 / 115 = <mark>0,383 = 38,3%</mark>
+c) F1 = 2 × (0,657 × 0,383) / (0,657 + 0,383) = 0,503 / 1,040 = <mark>0,484 = 48,4%</mark></div>
+      <p>Interpretação: quando o especialista diz “SD”, acerta 2 de cada 3 vezes, mas deixa passar 62% dos casos reais de SD (a maioria confundida com fruto sadio). O F1 baixo mostra o desequilíbrio entre precision e recall.</p>
+      <p class="small">Confira no <a href="#cm">explorador da matriz</a>, que já abre na classe SD.</p>
+    </div>
+  </article>
+</section>
+
+<!-- ================= MÉTRICAS ================= -->
+<section id="metricas">
+  <div class="sec-head">
+    <div class="eyebrow">Arquivo 04 · 5,0 pts na prova passada · Q1, Q4, Q7</div>
+    <h2>Métricas de classificação</h2>
+  </div>
+
+  <div class="block">
+    <h3>Os quatro resultados possíveis (slide 4)</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th></th><th>Previsto positivo</th><th>Previsto negativo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Real positivo</strong></td><td><strong style="color:var(--tp)">TP</strong> verdadeiro positivo</td><td><strong style="color:var(--fn)">FN</strong> falso negativo (o modelo deixou passar)</td></tr>
+        <tr><td><strong>Real negativo</strong></td><td><strong style="color:var(--fp)">FP</strong> falso positivo (alarme falso)</td><td><strong>TN</strong> verdadeiro negativo</td></tr>
+      </tbody></table></div>
+    <p>Truque para não confundir: a segunda letra (P ou N) é o que o <strong>modelo disse</strong>; a primeira (T ou F) diz se ele <strong>acertou</strong>. FN = o modelo disse “negativo” e errou, então o caso era positivo.</p>
+  </div>
+
+  <div class="block">
+    <h3>Threshold (limiar), slide 5</h3>
+    <p>O modelo devolve uma probabilidade entre 0 e 1. O threshold é o ponto de corte: acima dele a instância vira “positiva”, abaixo vira “negativa”.</p>
+    <div class="tbl compact"><table>
+      <thead><tr><th>Se o threshold…</th><th>Previsões positivas</th><th>FP</th><th>FN</th><th>Precision</th><th>Recall</th></tr></thead>
+      <tbody>
+        <tr><td><strong>sobe</strong> (modelo mais exigente)</td><td>diminuem</td><td>↓</td><td>↑</td><td>tende a ↑</td><td>↓</td></tr>
+        <tr><td><strong>desce</strong> (modelo mais permissivo)</td><td>aumentam</td><td>↑</td><td>↓</td><td>tende a ↓</td><td>↑</td></tr>
+      </tbody></table></div>
+  </div>
+
+  <div class="panel" id="sim">
+    <h3>Simulador de threshold (exemplo do slide 27, “ser gato”)</h3>
+    <p class="small muted">10 imagens com a probabilidade de “ser gato” dada pelo modelo. É positivo quem tem probabilidade ≥ threshold. Arraste e veja FP e FN trocarem de lugar.</p>
+    <div class="sim-top">
+      <label for="thr">Threshold</label>
+      <input type="range" id="thr" min="0" max="9" step="1" value="5" aria-describedby="thrv">
+      <span class="thv" id="thrv">0,50</span>
+    </div>
+    <div class="imgs" id="imgs"></div>
+    <div class="res" id="simres"></div>
+    <div class="keyrow">
+      <span><i style="background:var(--tp-soft);border:1px solid var(--tp)"></i>TP: gato, previsto gato</span>
+      <span><i style="background:var(--fp-soft);border:1px solid var(--fp)"></i>FP: não é gato, previsto gato</span>
+      <span><i style="background:var(--fn-soft);border:1px solid var(--fn)"></i>FN: gato, previsto não gato</span>
+      <span><i style="background:var(--surface);border:1px solid var(--line)"></i>TN</span>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>As métricas (slides 6–16)</h3>
+    <div class="fcards">
+      <div class="fcard">
+        <div class="fn">Accuracy</div>
+        <div class="f">Acc = <span class="frac"><span>TP + TN</span><span>TP + TN + FP + FN</span></span></div>
+        <div class="note">Acertos sobre o total. <strong>Engana em base desbalanceada</strong> e não diferencia FP de FN. Usar quando as classes são balanceadas e nenhum erro é pior que o outro.</div>
+      </div>
+      <div class="fcard">
+        <div class="fn">Precision</div>
+        <div class="f">P = <span class="frac"><span>TP</span><span>TP + FP</span></span></div>
+        <div class="note">“Das vezes que o modelo disse positivo, quantas acertou?” Ignora FN. Priorizar quando <strong>FP é caro</strong>: spam (não bloquear e-mail legítimo).</div>
+      </div>
+      <div class="fcard">
+        <div class="fn">Recall (sensibilidade)</div>
+        <div class="f">R = <span class="frac"><span>TP</span><span>TP + FN</span></span></div>
+        <div class="note">“Dos positivos reais, quantos o modelo pegou?” Ignora FP. Priorizar quando <strong>FN é caro</strong>: triagem de doença, fruta defeituosa, acesso de pessoa autorizada.</div>
+      </div>
+      <div class="fcard">
+        <div class="fn">F1-score</div>
+        <div class="f">F1 = 2 × <span class="frac"><span>P × R</span><span>P + R</span></span></div>
+        <div class="note">Média <strong>harmônica</strong> de P e R: só é alto se os dois forem altos. Atalho que evita arredondamento: F1 = 2TP / (2TP + FP + FN).</div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="call warn">
+        <div class="ct">Accuracy enganosa (slide 7)</div>
+        <p>Na base de mamões, a acurácia geral é 10.128 / 15.179 = 0,667, mas classes como Phytophthora e Chocolate spot acertam só 30%. A classe grande (Healthy, 99%) puxa a média para cima.</p>
+      </div>
+      <div class="call warn">
+        <div class="ct">Recall enganoso (slide 13)</div>
+        <p>100 spams e 10 e-mails normais. O modelo diz que <em>todos</em> são spam: recall = 100 / (100 + 0) = 100%. Parece perfeito, mas bloqueia todos os e-mails legítimos (10 FP).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="cm">
+    <h3>Explorador da matriz de confusão (slide 18, igual à Q7)</h3>
+    <p class="small muted">Linhas = real (Ground Truth). Colunas = previsto (Human Expert). Escolha a classe: TP é a diagonal, FP é o resto da coluna, FN é o resto da linha.</p>
+    <div class="chips" id="cmchips" role="group" aria-label="Classe"></div>
+    <div class="tbl"><table class="cm" id="cmtable"></table></div>
+    <div class="keyrow">
+      <span><i style="background:var(--tp)"></i>TP</span>
+      <span><i style="background:var(--fp-soft);border:1px solid var(--fp)"></i>FP (mesma coluna)</span>
+      <span><i style="background:var(--fn-soft);border:1px solid var(--fn)"></i>FN (mesma linha)</span>
+    </div>
+    <div id="cmname" class="small muted"></div>
+    <div class="res" id="cmres"></div>
+  </div>
+
+  <div class="block">
+    <h3>Métricas gerais da matriz (slides 22–23)</h3>
+    <ul>
+      <li><strong>TP geral</strong> = soma da diagonal = 331+11+69+183+44+155+233+10 = <strong>1.036</strong>.</li>
+      <li><strong>FP geral</strong> = Σ(total da coluna − TP) = 172+7+89+69+23+50+106+2 = <strong>518</strong>.</li>
+      <li><strong>FN geral</strong> = Σ(total da linha − TP). O slide chega a 465, mas usa 239 no lugar de 290 (BS) e 11 no lugar de 13 (PT). O certo é 120+1+112+19+71+135+57+3 = <strong>518</strong>.</li>
+      <li>Em matriz multiclasse, o FP geral é sempre igual ao FN geral (os dois são “tudo fora da diagonal” = 1554 − 1036). Por isso Precision geral = Recall geral = Accuracy = 1036/1554 = 0,667. O slide mostra Recall 0,69 por causa do FN errado.</li>
+    </ul>
+  </div>
+
+  <div class="block" id="ap">
+    <h3>Curva Precision-Recall, AP e mAP (slides 26–36)</h3>
+    <p><strong>Average Precision (AP)</strong> combina precision e recall em vários thresholds numa única métrica: é a área sob a curva PR. <strong>mAP</strong> é a média dos APs de todas as classes.</p>
+    <h4>Passo a passo do professor</h4>
+    <ol>
+      <li>Para cada threshold, conte TP, FP, FN e calcule P e R (tabela do slide 27).</li>
+      <li>Percorra os pontos em ordem crescente de recall e identifique onde o recall <strong>aumenta</strong>.</li>
+      <li>Em cada aumento: ΔR = recall atual − recall anterior.</li>
+      <li>Multiplique ΔR pela <strong>precision máxima</strong> no recall atual (se houver várias precisions para o mesmo recall, use a maior).</li>
+      <li>Some todas as áreas. O professor começa no primeiro valor de recall, sem somar a faixa de 0 até ele.</li>
+    </ol>
+    <div class="calc">Exemplo do gato (recall 0,2 → 0,4 → 0,6 → 0,8 → 1,0)
+0,2→0,4: 0,2 × 0,667 = 0,1334
+0,4→0,6: 0,2 × 0,75  = 0,15
+0,6→0,8: 0,2 × 0,667 = 0,1334
+0,8→1,0: 0,2 × 0,667 = 0,1334   (slide usa 0,667; a regra estrita daria 0,556)
+AP = 0,55
+
+mAP = (AP classe 1 + AP classe 2 + ... + AP classe n) / n</div>
+    <details>
+      <summary>Exercício dos slides 33–36: Carros e Bicicletas</summary>
+      <div class="dbody">
+        <div class="calc">Carros:     0,1×0,75 + 0,1×0,70 + 0,1×0,67 + 0,1×0,64 + 0,1×0,59
+           = 0,075 + 0,070 + 0,067 + 0,064 + 0,059 = 0,335
+Bicicletas: 0,2×0,80 + 0,2×0,67 = 0,16 + 0,134 = 0,294
+mAP = (0,335 + 0,294) / 2 = 0,3145</div>
+        <p class="small muted">O slide 36 escreve AP(Carros) = 0,376 e chega a mAP = 0,335, o que não bate com os 0,335 calculados no slide 35. Se cair algo parecido, mostre as contas.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ================= NÃO SUPERVISIONADO ================= -->
+<section id="clustering">
+  <div class="sec-head">
+    <div class="eyebrow">Arquivo Não supervisionado · 2,5 pts · Q2, Q5, Q6</div>
+    <h2>Aprendizado não supervisionado e clustering</h2>
+  </div>
+
+  <div class="block">
+    <h3>Conceito (slides 3–5)</h3>
+    <p>Algoritmos que trabalham com dados <strong>sem rótulos</strong>. O desafio é encontrar estruturas ou padrões ocultos, a relação inerente entre os dados, em vez de prever ou classificar. Motivação: empresas acumulam volumes enormes de dados (dobram a cada ~15 meses) que viram “repositório morto” porque é inviável analisar à mão.</p>
+  </div>
+
+  <div class="block">
+    <h3>KDD: Knowledge Discovery in Databases (slides 6–9)</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th>Fase</th><th>O que acontece</th></tr></thead>
+      <tbody>
+        <tr><td>1. Seleção de dados</td><td>Escolha do conjunto e das variáveis. Complexa porque as fontes são distintas (data warehouse, planilhas, sistemas legados).</td></tr>
+        <tr><td>2. Pré-processamento e limpeza</td><td>Remove inconsistências e redundâncias. <mark>Pode consumir 80% do tempo</mark> do processo.</td></tr>
+        <tr><td>3. Transformação</td><td>Formata e armazena os dados num padrão acessível pela aplicação.</td></tr>
+        <tr><td>4. Mineração de dados</td><td><strong>Núcleo do KDD.</strong> Aplica aprendizado de máquina, reconhecimento de padrões e clusterização. Data mining é uma fase do KDD, não sinônimo.</td></tr>
+        <tr><td>5. Interpretação e avaliação</td><td>Um especialista do domínio analisa e interpreta o resultado.</td></tr>
+      </tbody></table></div>
+  </div>
+
+  <div class="block">
+    <h3>Clustering, similaridade e distância (slides 10–15)</h3>
+    <ul>
+      <li><strong>Clustering (análise de agrupamento):</strong> classificação não supervisionada que junta objetos similares em grupos (clusters, conglomerados).</li>
+      <li><strong>Objeto</strong> é o que se quer agrupar; <strong>atributos</strong> são as informações usadas para agrupar (idade, peso, altura).</li>
+      <li><strong>Similaridade</strong> mede o quão parecidos são dois objetos; <strong>dissimilaridade</strong> mede o quão diferentes. Os métodos hierárquicos usam uma matriz N × N de dissimilaridade.</li>
+      <li><strong>Distância euclidiana:</strong> quanto maior, maior a dissimilaridade.</li>
+    </ul>
+    <div class="fcards">
+      <div class="fcard"><div class="fn">Distância euclidiana</div><div class="f">d(P,Q) = √Σ(p<sub>i</sub> − q<sub>i</sub>)²</div></div>
+      <div class="fcard"><div class="fn">Versão usada nos exemplos do divisivo</div><div class="f">d = Σ(x<sub>i</sub> − y<sub>i</sub>)²</div><div class="note">Sem a raiz. Ex.: D(A,B) = (25−32)² + (56−80)² + (160−187)² = 49 + 576 + 729 = 1354.</div></div>
+      <div class="fcard"><div class="fn">Normalização min-max</div><div class="f">Z = <span class="frac"><span>X − X<sub>min</sub></span><span>X<sub>max</sub> − X<sub>min</sub></span></span></div><div class="note">Evita que um atributo com faixa grande (altura em cm) domine a distância.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Hierárquico: aglomerativo × divisivo (slides 16–18, 35–36)</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th></th><th>Aglomerativo</th><th>Divisivo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Início</strong></td><td>Cada objeto é um cluster isolado</td><td>Todos os objetos num único cluster</td></tr>
+        <tr><td><strong>A cada passo</strong></td><td>Une os 2 clusters mais próximos</td><td>Divide um cluster em dois</td></tr>
+        <tr><td><strong>Critério</strong></td><td>Matriz de dissimilaridade + tipo de ligação</td><td>Par mais distante para dividir; maior SSE para escolher quem dividir</td></tr>
+        <tr><td><strong>Detalhe</strong></td><td>Depois de unidos, ficam juntos até o fim</td><td>Para ao atingir o número de clusters desejado</td></tr>
+      </tbody></table></div>
+    <div class="fcards">
+      <div class="fcard"><div class="fn">Ligação simples (single)</div><div class="note">Distância entre clusters = <strong>menor</strong> distância entre quaisquer dois pontos.</div></div>
+      <div class="fcard"><div class="fn">Ligação completa (complete)</div><div class="note">Distância entre clusters = <strong>maior</strong> distância entre quaisquer dois pontos.</div></div>
+      <div class="fcard"><div class="fn">Ligação de centroides</div><div class="note">Distância entre clusters = distância entre os <strong>centroides</strong>.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Algoritmo divisivo passo a passo (slides 19–21)</h3>
+    <ol>
+      <li>Cluster C1 começa com todos os elementos.</li>
+      <li>Escolhe os dois elementos <strong>mais distantes</strong> do cluster atual (p1 e p2).</li>
+      <li>Cria um novo cluster C2 com p2.</li>
+      <li>Para cada elemento X<sub>i</sub>, calcula a distância até p1 e até p2.</li>
+      <li>Se X<sub>i</sub> está mais perto de p2, sai de C1 e vai para C2.</li>
+      <li>Repete 4 e 5 até verificar todos.</li>
+      <li>Calcula o <strong>centroide</strong> (média de cada atributo) e o <strong>SSE</strong> de todos os clusters.</li>
+      <li>Escolhe o cluster com <strong>maior SSE</strong> para ser dividido.</li>
+      <li>Repete 2 a 8 até ter o número de clusters desejado.</li>
+    </ol>
+    <div class="fcards">
+      <div class="fcard"><div class="fn">Centroide</div><div class="note">Ponto imaginário com a média de cada atributo do cluster.</div></div>
+      <div class="fcard"><div class="fn">SSE</div><div class="f">SSE = Σ<sub>j</sub> Σ<sub>x∈Cj</sub> ‖x − μ<sub>j</sub>‖²</div><div class="note">Soma das distâncias ao quadrado até o centroide. Maior SSE = cluster mais disperso.</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>O exemplo completo dos slides (alunos A a J)</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th>Aluno</th><th class="num">Idade</th><th class="num">Peso</th><th class="num">Altura</th><th>Cluster final</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td class="num">25</td><td class="num">56</td><td class="num">160</td><td>C0</td></tr>
+        <tr><td>B</td><td class="num">32</td><td class="num">80</td><td class="num">187</td><td>C1</td></tr>
+        <tr><td>C</td><td class="num">12</td><td class="num">80</td><td class="num">195</td><td>C1</td></tr>
+        <tr><td>D</td><td class="num">60</td><td class="num">90</td><td class="num">190</td><td>C2</td></tr>
+        <tr><td>E</td><td class="num">32</td><td class="num">100</td><td class="num">175</td><td>C2</td></tr>
+        <tr><td>F</td><td class="num">30</td><td class="num">65</td><td class="num">150</td><td>C0</td></tr>
+        <tr><td>G</td><td class="num">27</td><td class="num">60</td><td class="num">145</td><td>C0</td></tr>
+        <tr><td>H</td><td class="num">45</td><td class="num">65</td><td class="num">190</td><td>C2</td></tr>
+        <tr><td>I</td><td class="num">15</td><td class="num">80</td><td class="num">198</td><td>C1</td></tr>
+        <tr><td>J</td><td class="num">34</td><td class="num">90</td><td class="num">200</td><td>C1</td></tr>
+      </tbody></table></div>
+    <div class="calc">1ª divisão: maior dissimilaridade da matriz = G–D = 4014 → p1 = G, p2 = D
+  Cada aluno vai para quem estiver mais perto:
+  A (G 245 × D 3281) → G     F (59 × 3125) → G      B (2189 × 893) → D
+  C (3125 × 2429) → D        E (2525 × 1109) → D    H (2374 × 850) → D
+  I (3353 × 2189) → D        J (3974 × 776) → D
+  Resultado: C0 = {A, F, G}   C1 = {B, C, D, E, H, I, J}
+
+2ª divisão: C1 tem o maior SSE. Par mais distante dentro dele = C–D = 2429
+  B (C 464 × D 893) → C      E (1200 × 1109) → D    H (1339 × 850) → D
+  I (18 × 2189) → C          J (609 × 776) → C
+  Resultado: C1 = {B, C, I, J}   C2 = {D, E, H}
+
+SSE final: C0 = 170,00   C1 = 559,75   C2 = 1192,67  → próximo a dividir: C2</div>
+    <p class="small muted">A Q5 da prova usou C0 e C2 deste exemplo. Na próxima prova pode vir o C1: centroide (23,25; 82,5; 195) e SSE 559,75 (conta completa na seção de treino).</p>
+  </div>
+</section>
+
+<!-- ================= GENERALIZAÇÃO ================= -->
+<section id="generalizacao">
+  <div class="sec-head">
+    <div class="eyebrow">Fora dos 4 arquivos · 2,5 pts · Q2, Q3, Q6</div>
+    <h2>Supervisionado, overfitting e divisão dos dados</h2>
+  </div>
+  <div class="call out">
+    <div class="ct">Conteúdo sem slide</div>
+    <p>Este bloco foi montado a partir do que a prova cobrou e do conteúdo padrão da disciplina. Se você tiver o slide 03 (provavelmente aprendizado supervisionado), me mande que eu ajusto com os termos exatos do professor.</p>
+  </div>
+
+  <div class="block">
+    <h3>Aprendizado supervisionado</h3>
+    <ul>
+      <li>Treina com exemplos <strong>rotulados</strong> (entrada + resposta correta).</li>
+      <li><strong>Classificação</strong>: saída é uma classe (spam/não spam, doença do mamão). <strong>Regressão</strong>: saída é um número (nota final, acuidade visual).</li>
+      <li>Avaliado com métricas que comparam previsão e rótulo (arquivo 04).</li>
+      <li>Exemplos nos slides: perceptron de spam (Introdução 54–59), matriz dos mamões (Métricas 18), regressão horas × nota (Estatística 22–30).</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>Divisão dos dados</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th>Conjunto</th><th class="num">Proporção usual</th><th>Para que serve</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Treino</strong></td><td class="num">70%</td><td>O modelo aprende os parâmetros (pesos) com ele.</td></tr>
+        <tr><td><strong>Validação</strong></td><td class="num">15%</td><td>Ajustar hiperparâmetros, escolher modelo, decidir quando parar (early stopping), detectar overfitting durante o treino.</td></tr>
+        <tr><td><strong>Teste</strong></td><td class="num">15%</td><td>Avaliação final, uma vez, com dados nunca vistos. Mede a generalização.</td></tr>
+      </tbody></table></div>
+    <p>Regras que caem em V/F: nunca testar com os dados de treino; os três conjuntos devem vir da mesma distribuição e ser representativos (liga com “representatividade” de Estatística e com o slide 81 da Introdução); outras divisões comuns são 80/20 e 60/20/20.</p>
+  </div>
+
+  <div class="block">
+    <h3>Overfitting × underfitting</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th></th><th>Underfitting</th><th>Bom ajuste</th><th>Overfitting</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Erro no treino</strong></td><td>Alto</td><td>Baixo</td><td>Muito baixo</td></tr>
+        <tr><td><strong>Erro no teste</strong></td><td>Alto</td><td>Baixo</td><td>Alto</td></tr>
+        <tr><td><strong>O que houve</strong></td><td>Modelo simples demais, não aprendeu o padrão</td><td>Aprendeu o padrão geral</td><td>Decorou o treino, incluindo ruído</td></tr>
+        <tr><td><strong>Causas</strong></td><td>Modelo pouco complexo, poucos atributos, pouco treino</td><td></td><td>Modelo complexo demais, poucos dados, pouca variedade, treino longo demais</td></tr>
+        <tr><td><strong>Soluções</strong></td><td>Modelo mais complexo, mais atributos, treinar mais</td><td></td><td>Mais dados e mais variados, regularização (Dropout), early stopping, simplificar, validação cruzada</td></tr>
+      </tbody></table></div>
+    <p class="small muted">Analogia útil para a discursiva: o aluno que decora as respostas da lista de exercícios (overfitting) vai mal quando a prova muda os números; o que não estudou (underfitting) vai mal na lista e na prova.</p>
+  </div>
+</section>
+
+<!-- ================= ESTATÍSTICA ================= -->
+<section id="estatistica">
+  <div class="sec-head">
+    <div class="eyebrow">Arquivo 02 · não caiu na prova passada</div>
+    <h2>Estatística na IA</h2>
+  </div>
+
+  <div class="block">
+    <h3>Papéis da estatística num sistema de IA (slides 3–11)</h3>
+    <div class="tbl compact"><table>
+      <tbody>
+        <tr><td><strong>Compreensão dos dados</strong></td><td>Tipos, intervalos, distribuição; detectar ausentes e incoerentes (idade negativa, peso absurdo).</td></tr>
+        <tr><td><strong>Análise estatística</strong></td><td>Tendência central (média, mediana, moda), dispersão (variância, desvio padrão), visualização (histograma, dispersão).</td></tr>
+        <tr><td><strong>Normalização e transformação</strong></td><td>Min-max para escala 0–1; log para reduzir o efeito de valores extremos (salários 30 a 250 viram ≈1,48 a 2,40).</td></tr>
+        <tr><td><strong>Limpeza</strong></td><td>Remover ou imputar ausentes (ex.: idade faltante pela média), corrigir erros de entrada.</td></tr>
+        <tr><td><strong>Validação e otimização</strong></td><td>Validação cruzada, F1, precision, recall.</td></tr>
+        <tr><td><strong>Gerenciamento de incertezas</strong></td><td>Ex.: recomendação de filmes; preferências mudam com o tempo e o contexto.</td></tr>
+      </tbody></table></div>
+    <div class="call tip">
+      <div class="ct">Por que normalizar (slides 6–7)</div>
+      <p>KNN com idade (18 a 90) e gênero (0 ou 1): sem normalizar, d = √((80−20)² + (1−0)²) ≈ 60, e o gênero quase não conta. Normalizando a idade (80 → 0,861; 20 → 0,028), d = √(0,833² + 1²) ≈ 1,301 e os dois atributos passam a pesar.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Conceitos (slides 13–20)</h3>
+    <ul>
+      <li><strong>População:</strong> todos os elementos de interesse (todos os alunos da UVV). <strong>Amostra:</strong> subconjunto que representa a população (200 de 20.000).</li>
+      <li><strong>Representatividade:</strong> a amostra reflete as proporções da população (cursos, gêneros, idades).</li>
+      <li><strong>Frequência absoluta:</strong> quantas vezes o valor aparece (40 alunos com 1,70 m). <strong>Relativa:</strong> proporção (40/200 = 20%).</li>
+      <li><strong>Variância:</strong> o quanto os valores se afastam da média. <strong>Desvio padrão:</strong> raiz da variância, na mesma unidade dos dados.</li>
+    </ul>
+    <div class="fcards">
+      <div class="fcard"><div class="fn">Variância amostral</div><div class="f">s² = <span class="frac"><span>Σ(x<sub>i</sub> − x̄)²</span><span>n − 1</span></span></div></div>
+      <div class="fcard"><div class="fn">Desvio padrão</div><div class="f">s = √s²</div></div>
+    </div>
+    <div class="calc">Grupo A: 7, 8, 9, 7, 8   média 7,8
+Σ(x − 7,8)² = 0,64 + 0,04 + 1,44 + 0,64 + 0,04 = 2,8
+s² = 2,8 / 4 = 0,7        s = √0,7 ≈ 0,84
+
+Grupo B: 4, 5, 10, 10, 10   média 7,8
+Σ(x − 7,8)² = 14,44 + 7,84 + 4,84 + 4,84 + 4,84 = 36,8
+s² = 36,8 / 4 = 9,2       s = √9,2 ≈ 3,03
+Mesma média, dispersão muito maior no B.</div>
+  </div>
+
+  <div class="block">
+    <h3>Regressão linear (slides 21–35)</h3>
+    <p>Modela a relação linear entre a variável <strong>dependente</strong> y (o que se quer prever) e a <strong>independente</strong> x (preditor), buscando a reta que melhor se ajusta aos dados.</p>
+    <div class="fcards">
+      <div class="fcard"><div class="fn">Reta</div><div class="f">y = m·x + b</div><div class="note">m = inclinação (quanto y muda por unidade de x); b = intercepto (y quando x = 0).</div></div>
+      <div class="fcard"><div class="fn">Inclinação</div><div class="f">m = <span class="frac"><span>nΣxy − ΣxΣy</span><span>nΣx² − (Σx)²</span></span></div></div>
+      <div class="fcard"><div class="fn">Intercepto</div><div class="f">b = <span class="frac"><span>Σy − mΣx</span><span>n</span></span></div></div>
+    </div>
+    <div class="calc">Horas de estudo × nota (n = 8, x = 1..8, y = 51 54 59 64 72 73 79 88)
+Σx = 36   Σy = 540   Σxy = 2647   Σx² = 204
+m = (8×2647 − 36×540) / (8×204 − 36²) = 1736 / 336 = 5,17
+b = (540 − 5,17×36) / 8 = 44,25          →  nota = 5,17·horas + 44,25
+
+Idade × acuidade visual (n = 20)
+Σx = 600   Σz = 1700   Σxz = 50450   Σx² = 19000
+m = (20×50450 − 600×1700) / (20×19000 − 600²) = −11000 / 20000 = −0,55
+b = (1700 − (−0,55)×600) / 20 = 2030 / 20 = 101,5   →  Z = 101,5 − 0,55X
+Cada ano a mais reduz a acuidade em 0,55 em média.</div>
+    <p class="small muted">Nos slides 26–27 os somatórios aparecem como Σy = 582 e Σxy = 2536, mas os valores corretos são 540 e 2647. O m = 5,17 e o b = 44,25 finais estão certos.</p>
+  </div>
+</section>
+
+<!-- ================= INTRODUÇÃO ================= -->
+<section id="introducao">
+  <div class="sec-head">
+    <div class="eyebrow">Arquivo 01 · não caiu na prova passada</div>
+    <h2>Introdução, conceitos e história</h2>
+  </div>
+
+  <div class="block">
+    <h3>As 4 abordagens de IA (slides 3–13)</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th>Abordagem</th><th>Ideia</th><th>Como decide</th><th>Exemplo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Pensam como humanos</strong></td><td>Aprender e raciocinar como uma pessoa, a partir de dados</td><td>Aprendizado de máquina, inferência estatística</td><td>CNN que detecta tumor como um médico; ChatGPT, DeepSeek</td></tr>
+        <tr><td><strong>Agem como humanos</strong></td><td>Simular o comportamento humano, sem se importar com a cognição interna</td><td>Fluxos, regras, aprendizado superficial</td><td>Chatbot de atendimento, NPC de jogo, robô humanoide</td></tr>
+        <tr><td><strong>Pensam logicamente</strong></td><td>Lógica formal e regras explícitas; precisos e determinísticos</td><td>Lógica simbólica, motor de inferência; <strong>não aprende</strong>, precisa de ajuste manual</td><td>Sistema especialista (análise de crédito), Prolog, “se massa &gt; 5 mm e calcificação irregular, então câncer”</td></tr>
+        <tr><td><strong>Agem logicamente</strong></td><td>Escolher a melhor ação para um objetivo; foco na ação</td><td>Otimização matemática, modelos probabilísticos</td><td>Carro autônomo, controle de tráfego, trading automático</td></tr>
+      </tbody></table></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h4>Teste de Turing (1950)</h4>
+      <p class="small">Um humano conversa por terminal com duas “pessoas”; se não distingue a máquina do humano, há indício de inteligência. Critério citado: enganar o juiz em pelo menos 30% das vezes após 5 minutos de conversa.</p>
+      <p class="small"><strong>Crítica:</strong> mede só a capacidade de enganar, não a inteligência real. Um carro autônomo não passaria (não conversa) e mesmo assim é IA avançada.</p>
+    </div>
+    <div class="panel">
+      <h4>ELIZA (1966, Joseph Weizenbaum)</h4>
+      <p class="small">Chatbot <strong>baseado em regras</strong>, com o script DOCTOR (terapeuta: ~80–100 palavras-chave, ~200–250 regras). Normaliza o texto, procura palavras-chave, aplica transformações e inverte pronomes (“eu” ↔ “você”); sem palavra-chave, usa frase genérica.</p>
+      <p class="small"><strong>Não tem:</strong> aprendizado, memória, inferência, modelo de mundo. Nunca foi formalmente submetida ao teste de Turing.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>ELIZA × LLMs atuais (slides 28–35)</h3>
+    <p>LLMs <strong>usam</strong> contexto, mas não o <strong>compreendem</strong>: têm memória do histórico e coerência linguística, mas não têm modelo de mundo (não preveem consequências físicas ou sociais nem simulam ações). “GPT não tem um modelo do mundo, tem um modelo do discurso humano sobre o mundo.”</p>
+  </div>
+
+  <div class="block">
+    <h3>Definições e características (slides 36–42)</h3>
+    <ul>
+      <li>IA estuda sistemas que executam tarefas que exigem capacidades humanas: percepção visual, fala, reconhecimento de padrões, aprendizado, decisão.</li>
+      <li>Plano Brasileiro de IA: sistemas que produzem resultados a partir de grande volume de dados, com aprendizagem, e fazem previsões, classificações, recomendações ou decisões.</li>
+      <li>Perceber o ambiente sozinho não é IA: um sensor de fumaça não é IA. Precisa de interpretação não trivial, decisão adaptativa e, preferencialmente, aprendizado com dados.</li>
+      <li>O “raciocínio” das IAs atuais é pseudo-raciocínio: inferência estatística, lógica simbólica, heurísticas, sem entendimento real. Assistentes como a Alexa funcionam por palavras-chave, intents e regras.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>IA fraca, AGI e superinteligência (slides 43–48)</h3>
+    <div class="tbl compact"><table>
+      <thead><tr><th>Tipo</th><th>Descrição</th><th>Existe?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>IA estreita (fraca)</strong></td><td>Treinada para uma tarefa específica, sem consciência. Um modelo dirige, outro faz arte.</td><td>Sim, é toda a IA atual</td></tr>
+        <tr><td><strong>AGI / IAG (forte)</strong></td><td>Aplicável a qualquer problema, com capacidade cognitiva humana (consciência, emoções, humor). Dirigiria e faria arte.</td><td>Não. ChatGPT <strong>não</strong> é AGI; multimodais são modelos específicos combinados</td></tr>
+        <tr><td><strong>Superinteligência</strong></td><td>Supera os melhores humanos em quase tudo; levanta questões de ética e segurança.</td><td>Não, é hipotética</td></tr>
+      </tbody></table></div>
+  </div>
+
+  <div class="block">
+    <h3>Linha do tempo (slides 53–78)</h3>
+    <div class="tl">
+      <div class="ev"><div class="yr">Década de 40</div><div>McCulloch e Pitts: neurônio artificial como circuito booleano; soma ponderada comparada a um limiar. Pesos definidos pelo programador.</div></div>
+      <div class="ev"><div class="yr">1947</div><div>Donald Hebb: neurônios que disparam juntos fortalecem a conexão; disparando separados, enfraquecem.</div></div>
+      <div class="ev"><div class="yr">1950</div><div>Alan Turing propõe o teste.</div></div>
+      <div class="ev"><div class="yr">1957</div><div>Frank Rosenblatt: <strong>Perceptron</strong>. A grande sacada: pesos <strong>ajustados automaticamente</strong>, aprendendo com os erros.</div></div>
+      <div class="ev"><div class="yr">1966</div><div>ELIZA.</div></div>
+      <div class="ev"><div class="yr">Fim dos anos 60</div><div><strong>1º inverno da IA.</strong> Minsky e Papert mostram que o perceptron não resolve problemas não linearmente separáveis, como o <strong>XOR</strong>; faltava poder computacional para ativações contínuas (ponto flutuante). Hoje o XOR se resolve com perceptrons em múltiplas camadas.</div></div>
+      <div class="ev"><div class="yr">Anos 80</div><div>Retorno com o <strong>backpropagation</strong>: Rumelhart, Hinton e Williams, “Learning representations by back-propagating errors”.</div></div>
+      <div class="ev"><div class="yr">1989</div><div>LeCun (Bell Labs): CNN + backpropagation para dígitos manuscritos de CEP (~9.000 amostras, ~1% de erro). Usada por anos para ler CEPs e cheques.</div></div>
+      <div class="ev"><div class="yr">Depois</div><div><strong>2º inverno da IA:</strong> exigia muitos dados e computação cara; expectativas irreais; falta de investimento.</div></div>
+      <div class="ev"><div class="yr">~2005</div><div>GPUs se popularizam: milhares de núcleos em paralelo, ideais para treinar redes.</div></div>
+      <div class="ev"><div class="yr">2012</div><div><strong>AlexNet</strong> (Alex Krizhevsky): 8 camadas, 2 GPUs, ReLU e Dropout. Vence o ILSVRC/ImageNet (1,2 milhão de imagens, 1.000 classes) com 15,3% de erro top-5, contra 26,2% do ano anterior.</div></div>
+      <div class="ev"><div class="yr">2015–2017</div><div>Desde 2015 a IA supera o humano no ImageNet; até 2017 todos os vencedores usam redes profundas.</div></div>
+      <div class="ev"><div class="yr">2019</div><div>LeCun, Hinton e Bengio recebem o Prêmio Turing (“Nobel da computação”).</div></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Perceptron em números (slides 54–59)</h3>
+    <div class="fcards">
+      <div class="fcard"><div class="fn">Saída</div><div class="f">z = Σ w<sub>j</sub>x<sub>j</sub> + b</div><div class="note">Saída 1 se z &gt; limiar, 0 se z ≤ limiar.</div></div>
+      <div class="fcard"><div class="fn">Atualização dos pesos</div><div class="f">w<sub>i</sub> = w<sub>i</sub> + α(y − ŷ)x<sub>i</sub></div><div class="note">Acertou: nada muda. Previu 0 e era 1: peso aumenta. Previu 1 e era 0: peso diminui.</div></div>
+    </div>
+    <div class="calc">Spam: x = (0,50; 0,30; 0,20)   w = (0,40; 0,60; 0,10)
+z = 0,40×0,50 + 0,60×0,30 + 0,10×0,20 = 0,20 + 0,18 + 0,02 = 0,40</div>
+  </div>
+
+  <div class="block">
+    <h3>Perspectiva futura (slides 80–88)</h3>
+    <ul>
+      <li>Só aumentar dados, camadas e parâmetros (GPT-2 1,5 bi → GPT-3 175 bi) não resolve as deficiências fundamentais.</li>
+      <li>A IA assume que teste e treino vêm da mesma distribuição; no mundo real a distribuição muda e o desempenho de laboratório cai.</li>
+      <li>Humanos generalizam com poucos exemplos e recombinam habilidades (dirigir em “mão inglesa”).</li>
+      <li>Falta <strong>modelo de mundo / senso comum</strong>: o carro autônomo precisa de milhares de tentativas para aprender que curva em alta velocidade causa acidente; o humano usa física intuitiva.</li>
+      <li>Desafio: aprender modelos de mundo de forma não supervisionada ou auto-supervisionada e usá-los para prever, raciocinar e planejar.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= FORMULÁRIO ================= -->
+<section id="formulas">
+  <div class="sec-head">
+    <div class="eyebrow">Para revisar na véspera</div>
+    <h2>Formulário e erratas dos slides</h2>
+  </div>
+  <div class="fcards">
+    <div class="fcard"><div class="fn">Accuracy</div><div class="f"><span class="frac"><span>TP + TN</span><span>TP + TN + FP + FN</span></span></div></div>
+    <div class="fcard"><div class="fn">Precision</div><div class="f"><span class="frac"><span>TP</span><span>TP + FP</span></span></div><div class="note">Matriz: TP / total da coluna</div></div>
+    <div class="fcard"><div class="fn">Recall</div><div class="f"><span class="frac"><span>TP</span><span>TP + FN</span></span></div><div class="note">Matriz: TP / total da linha</div></div>
+    <div class="fcard"><div class="fn">F1</div><div class="f">2 × <span class="frac"><span>P × R</span><span>P + R</span></span> = <span class="frac"><span>2TP</span><span>2TP + FP + FN</span></span></div></div>
+    <div class="fcard"><div class="fn">AP</div><div class="f">Σ ΔR × P<sub>máx</sub></div><div class="note">Em cada aumento de recall</div></div>
+    <div class="fcard"><div class="fn">mAP</div><div class="f"><span class="frac"><span>Σ AP<sub>classe</sub></span><span>nº de classes</span></span></div></div>
+    <div class="fcard"><div class="fn">Distância euclidiana</div><div class="f">√Σ(p<sub>i</sub> − q<sub>i</sub>)²</div><div class="note">Divisivo nos slides: sem a raiz</div></div>
+    <div class="fcard"><div class="fn">Centroide</div><div class="f">μ = média de cada atributo</div></div>
+    <div class="fcard"><div class="fn">SSE</div><div class="f">Σ Σ ‖x − μ‖²</div><div class="note">Maior SSE = próximo a dividir</div></div>
+    <div class="fcard"><div class="fn">Min-max</div><div class="f"><span class="frac"><span>x − min</span><span>max − min</span></span></div></div>
+    <div class="fcard"><div class="fn">Variância amostral</div><div class="f"><span class="frac"><span>Σ(x − x̄)²</span><span>n − 1</span></span></div></div>
+    <div class="fcard"><div class="fn">Regressão</div><div class="f">m = <span class="frac"><span>nΣxy − ΣxΣy</span><span>nΣx² − (Σx)²</span></span></div><div class="f">b = (Σy − mΣx) / n</div></div>
+  </div>
+  <div class="call warn">
+    <div class="ct">Erratas encontradas nos slides</div>
+    <ul class="small">
+      <li><strong>Não supervisionado 28–29:</strong> centroide de C0 é 27,33 (não 27,22) e o peso é 60,33 (não 60,22). SSE correto = 170,00 (o slide dá 178,73).</li>
+      <li><strong>Métricas 11:</strong> o slide do Recall diz que ele “leva em consideração os FP, mas os FN ficam de fora”. É o contrário: recall usa FN e ignora FP (como o próprio slide 13 diz).</li>
+      <li><strong>Métricas 22–23:</strong> FN geral correto é 518, não 465 (erros nas linhas BS e PT). Recall geral correto = 0,667.</li>
+      <li><strong>Métricas 30 e 36:</strong> AP do gato usa 0,667 no último degrau; mAP usa AP(Carros) = 0,376, enquanto o slide 35 calculou 0,335.</li>
+      <li><strong>Estatística 20:</strong> “Grupo A desviam cerca de 3 pontos” deveria ser Grupo B.</li>
+      <li><strong>Estatística 26–27:</strong> Σy = 540 e Σxy = 2647 (slide mostra 582 e 2536); m e b finais estão certos.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= TREINO ================= -->
+<section id="treino">
+  <div class="sec-head">
+    <div class="eyebrow">No estilo da prova passada · clique para ver a resposta</div>
+    <h2>Questões de treino</h2>
+  </div>
+  <div class="practice">
+    <details><summary><span class="qn">T1</span><span>Na matriz do slide 18, calcule precision, recall e F1 da classe <strong>CS</strong>.</span></summary><div class="dbody"><div class="calc">TP = 183   FP = 252 − 183 = 69   FN = 202 − 183 = 19
+P = 183/252 = 0,726   R = 183/202 = 0,906
+F1 = 2×183 / (2×183 + 69 + 19) = 366/454 = 0,806</div></div></details>
+    <details><summary><span class="qn">T2</span><span>Mesma matriz, classe <strong>PS</strong>. Qual erro domina: FP ou FN?</span></summary><div class="dbody"><div class="calc">TP = 155   FP = 205 − 155 = 50   FN = 290 − 155 = 135
+P = 155/205 = 0,756   R = 155/290 = 0,534
+F1 = 310 / (310 + 50 + 135) = 310/495 = 0,626</div><p>Domina o FN (135): muitos PS reais foram classificados como outra coisa, principalmente BS (79) e MD (39).</p></div></details>
+    <details><summary><span class="qn">T3</span><span>Qual a accuracy geral da matriz do slide 18?</span></summary><div class="dbody"><p>Soma da diagonal / total = 1036 / 1554 = <strong>0,667 (66,7%)</strong>.</p></div></details>
+    <details><summary><span class="qn">T4</span><span>Um filtro de spam está bloqueando muitos e-mails legítimos. O que fazer com o threshold e o que acontece com precision e recall?</span></summary><div class="dbody"><p>E-mail legítimo bloqueado é <strong>FP</strong> (positivo = spam). Deve-se <strong>aumentar</strong> o threshold: FP cai, precision sobe; em troca, alguns spams passam (FN sobe) e o recall cai. É o caso clássico de priorizar precision (slide 10).</p></div></details>
+    <details><summary><span class="qn">T5</span><span>Num teste de triagem de câncer, qual métrica priorizar e como ajustar o threshold?</span></summary><div class="dbody"><p>Priorizar <strong>recall</strong>: não pode deixar doente sem diagnóstico (FN caro). Reduzir o threshold. Aumentam os FP (exames extras), aceitável nesse contexto (slide 12).</p></div></details>
+    <details><summary><span class="qn">T6</span><span>Por que um modelo que diz que todos os e-mails são spam tem recall 100% e mesmo assim é ruim?</span></summary><div class="dbody"><p>Recall = TP/(TP+FN) ignora FP. Com 100 spams e 10 normais, FN = 0, então recall = 1. Mas precision = 100/110 = 0,909 e todos os 10 e-mails legítimos são bloqueados. Por isso se usa F1 ou precision junto (slide 13).</p></div></details>
+    <details><summary><span class="qn">T7</span><span>No simulador do gato, qual threshold dá o maior F1?</span></summary><div class="dbody"><p>Threshold <strong>0,50</strong>: TP 4, FP 2, FN 1 → P = 0,667, R = 0,8, F1 = 8/11 = 0,727. (Em 0,20 o F1 é 10/14 = 0,714.)</p></div></details>
+    <details><summary><span class="qn">T8</span><span>Calcule centroide e SSE do cluster C1 = {B, C, I, J}.</span></summary><div class="dbody"><div class="calc">Centroide: idade 93/4 = 23,25   peso 330/4 = 82,5   altura 780/4 = 195
+d²(B) = (32−23,25)² + (80−82,5)² + (187−195)² = 76,56 + 6,25 + 64 = 146,81
+d²(C) = (12−23,25)² + (80−82,5)² + (195−195)² = 126,56 + 6,25 + 0 = 132,81
+d²(I) = (15−23,25)² + (80−82,5)² + (198−195)² = 68,06 + 6,25 + 9 = 83,31
+d²(J) = (34−23,25)² + (90−82,5)² + (200−195)² = 115,56 + 56,25 + 25 = 196,81
+SSE(C1) = 559,75</div><p>Comparando com C0 (170,00) e C2 (1192,67), o próximo a dividir continua sendo C2.</p></div></details>
+    <details><summary><span class="qn">T9</span><span>No divisivo, com C1 = {B, C, D, E, H, I, J}, quem são p1 e p2 e para onde vai o H?</span></summary><div class="dbody"><p>O par mais distante é C–D (2429). H está a 1339 de C e a 850 de D, então vai para o cluster de D. Resultado: {B, C, I, J} e {D, E, H}.</p></div></details>
+    <details><summary><span class="qn">T10</span><span>Diferencie ligação simples, completa e de centroides.</span></summary><div class="dbody"><p>Simples: menor distância entre dois pontos dos clusters. Completa: maior distância. Centroides: distância entre os centroides. Usadas no aglomerativo para achar os dois clusters mais próximos (slide 36).</p></div></details>
+    <details><summary><span class="qn">T11</span><span>Qual fase do KDD é a mais demorada e qual é o núcleo do processo?</span></summary><div class="dbody"><p>Mais demorada: pré-processamento e limpeza (até 80% do tempo). Núcleo: mineração de dados, onde entram o aprendizado de máquina e a clusterização.</p></div></details>
+    <details><summary><span class="qn">T12</span><span>Normalize a idade 50 numa base em que a menor idade é 18 e a maior é 90.</span></summary><div class="dbody"><p>(50 − 18) / (90 − 18) = 32/72 = <strong>0,444</strong>.</p></div></details>
+    <details><summary><span class="qn">T13</span><span>Calcule variância e desvio padrão da amostra 2, 4, 6.</span></summary><div class="dbody"><p>Média 4. Σ(x − 4)² = 4 + 0 + 4 = 8. s² = 8 / (3 − 1) = <strong>4</strong>. s = <strong>2</strong>.</p></div></details>
+    <details><summary><span class="qn">T14</span><span>Pela reta Z = 101,5 − 0,55X, qual a acuidade prevista aos 30 anos? Interprete m e b.</span></summary><div class="dbody"><p>Z = 101,5 − 0,55×30 = 101,5 − 16,5 = <strong>85,0</strong>. m = −0,55: cada ano a mais reduz a acuidade em 0,55 em média. b = 101,5: valor da reta quando X = 0.</p></div></details>
+    <details><summary><span class="qn">T15</span><span>No perceptron de spam (z = 0,40) com limiar 0,5, qual a saída? Se o e-mail era spam e α = 0,1, qual o novo w1?</span></summary><div class="dbody"><p>0,40 ≤ 0,5, saída 0 (não spam), portanto errou. w1 = 0,40 + 0,1 × (1 − 0) × 0,50 = <strong>0,45</strong>. O peso aumenta porque previu 0 e o correto era 1.</p></div></details>
+    <details><summary><span class="qn">T16</span><span>V ou F: (a) ChatGPT é uma AGI. (b) ELIZA aprendia com as conversas. (c) O XOR não é linearmente separável. (d) Carro autônomo é exemplo de sistema que age logicamente. (e) O teste de Turing mede a inteligência real.</span></summary><div class="dbody"><p>(a) F. (b) F, era baseada em regras fixas, sem memória nem aprendizado. (c) V. (d) V. (e) F, mede só a capacidade de enganar um humano.</p></div></details>
+    <details><summary><span class="qn">T17</span><span>V ou F: (a) No aglomerativo, dois objetos unidos podem ser separados depois. (b) Sem normalização, um atributo de faixa grande pode dominar a matriz de dissimilaridade. (c) Data mining é sinônimo de KDD.</span></summary><div class="dbody"><p>(a) F, permanecem unidos até o fim. (b) V (slide 15). (c) F, é uma fase do KDD (a principal).</p></div></details>
+  </div>
+</section>
+
+<!-- ================= CHECKLIST ================= -->
+<section id="checklist">
+  <div class="sec-head">
+    <div class="eyebrow">Marque conforme domina · fica salvo neste navegador</div>
+    <h2>Checklist para a prova</h2>
+  </div>
+  <div class="progress" aria-hidden="true"><div id="prog"></div></div>
+  <p class="small muted" id="progtxt">0 de 0</p>
+  <div class="check" id="check">
+    <label><input type="checkbox" id="ck1"><span>Sei tirar TP, FP e FN de qualquer classe da matriz (coluna = previsto, linha = real).</span></label>
+    <label><input type="checkbox" id="ck2"><span>Calculo precision, recall e F1 com 3 casas e porcentagem.</span></label>
+    <label><input type="checkbox" id="ck3"><span>Sei o que acontece com FP, FN, precision e recall quando o threshold sobe ou desce.</span></label>
+    <label><input type="checkbox" id="ck4"><span>Sei escolher a métrica certa pelo custo do erro (spam → precision; doença/defeito → recall).</span></label>
+    <label><input type="checkbox" id="ck5"><span>Calculo AP pela soma de ΔR × precision máxima e sei o que é mAP.</span></label>
+    <label><input type="checkbox" id="ck6"><span>Sei explicar por que a accuracy engana em base desbalanceada.</span></label>
+    <label><input type="checkbox" id="ck7"><span>Calculo centroide e SSE (distância ao quadrado, sem raiz) e sei qual cluster dividir.</span></label>
+    <label><input type="checkbox" id="ck8"><span>Sei os 9 passos do divisivo e a diferença para o aglomerativo.</span></label>
+    <label><input type="checkbox" id="ck9"><span>Sei as ligações simples, completa e de centroides.</span></label>
+    <label><input type="checkbox" id="ck10"><span>Sei as 5 fases do KDD.</span></label>
+    <label><input type="checkbox" id="ck11"><span>Escrevo a comparação supervisionado × não supervisionado com exemplos.</span></label>
+    <label><input type="checkbox" id="ck12"><span>Explico overfitting e underfitting (erro de treino × teste, causas, soluções).</span></label>
+    <label><input type="checkbox" id="ck13"><span>Sei a divisão 70/15/15 e para que serve cada conjunto.</span></label>
+    <label><input type="checkbox" id="ck14"><span>Calculo variância (n−1), desvio padrão, min-max e a reta de regressão.</span></label>
+    <label><input type="checkbox" id="ck15"><span>Revisei as 4 abordagens de IA, Turing, ELIZA, IA fraca × AGI e a linha do tempo.</span></label>
+  </div>
+  <p class="foot">Montado a partir dos arquivos “01 – Introdução”, “02 – Estatística”, “04 – Métricas” e “Aprendizado NÃO supervisionado” e das 5 fotos da prova passada. As referências de slide usam a numeração dos arquivos .ppt.</p>
+</section>
+</main>
+</div>
+</div>
+
+<button type="button" class="theme-btn" id="themebtn" aria-label="Alternar tema"><span class="dot" aria-hidden="true"></span><span id="themelbl">Modo escuro</span></button>
+
+<script>
+(function(){
+  /* ---------- tema claro/escuro ---------- */
+  var root = document.documentElement, tbtn = document.getElementById('themebtn'), tlbl = document.getElementById('themelbl');
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function isDark(){ var t = root.getAttribute('data-theme'); return t ? t === 'dark' : !!(mq && mq.matches); }
+  function paintBtn(){ tlbl.textContent = isDark() ? 'Modo claro' : 'Modo escuro'; }
+  tbtn.addEventListener('click', function(){
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('guia-ia-theme', next); } catch(e) {}
+    paintBtn();
+  });
+  if (mq && mq.addEventListener) mq.addEventListener('change', paintBtn);
+  paintBtn();
+
+  var fmt =function(v, d){ return (d===undefined? v.toFixed(3) : v.toFixed(d)).replace('.', ','); };
+
+  /* ---------- Q1 table + PR chart ---------- */
+  var th = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0];
+  var rA = [1.00,0.90,0.80,0.70,0.60,0.50,0.40,0.30,0.20,0.10];
+  var pA = [1.00,0.95,0.92,0.85,0.80,0.75,0.70,0.65,0.55,0.50];
+  var rB = [1.00,0.85,0.70,0.60,0.50,0.40,0.30,0.20,0.10,0.05];
+  var pB = [0.95,0.90,0.88,0.80,0.75,0.70,0.65,0.55,0.45,0.40];
+  var tb = document.getElementById('q1table');
+  var rows = '';
+  for (var i=0;i<th.length;i++){
+    rows += '<tr><td class="num">'+fmt(th[i],1)+'</td><td class="num">'+fmt(rA[i],2)+'</td><td class="num">'+fmt(pA[i],2)+'</td><td class="num">'+fmt(rB[i],2)+'</td><td class="num">'+fmt(pB[i],2)+'</td></tr>';
+  }
+  tb.innerHTML = rows;
+
+  var svg = document.getElementById('prchart');
+  var W=540,H=310,m={l:54,r:18,t:14,b:46};
+  var y0=0.3,y1=1.0;
+  var X=function(r){return m.l + r*(W-m.l-m.r);};
+  var Y=function(p){return m.t + (y1-p)/(y1-y0)*(H-m.t-m.b);};
+  var s='<g class="grid">';
+  [0,0.2,0.4,0.6,0.8,1.0].forEach(function(r){ s+='<line x1="'+X(r)+'" x2="'+X(r)+'" y1="'+Y(y1)+'" y2="'+Y(y0)+'"/>'; });
+  [0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0].forEach(function(p){ s+='<line x1="'+X(0)+'" x2="'+X(1)+'" y1="'+Y(p)+'" y2="'+Y(p)+'"/>'; });
+  s+='</g><g class="ax">';
+  [0,0.2,0.4,0.6,0.8,1.0].forEach(function(r){ s+='<text x="'+X(r)+'" y="'+(Y(y0)+18)+'" text-anchor="middle">'+fmt(r,1)+'</text>'; });
+  [0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0].forEach(function(p){ s+='<text x="'+(X(0)-8)+'" y="'+(Y(p)+4)+'" text-anchor="end">'+fmt(p,1)+'</text>'; });
+  s+='<text x="'+((X(0)+X(1))/2)+'" y="'+(H-6)+'" text-anchor="middle">Recall</text>';
+  s+='<text transform="translate(14 '+((Y(y0)+Y(y1))/2)+') rotate(-90)" text-anchor="middle">Precision</text>';
+  s+='</g>';
+  function series(rs, ps, color){
+    var pts = rs.map(function(r,i){return [r,ps[i]];}).sort(function(a,b){return a[0]-b[0];});
+    var d = pts.map(function(q,i){return (i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1);}).join(' ');
+    var o = '<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.4" stroke-linejoin="round"/>';
+    pts.forEach(function(q){ o+='<circle cx="'+X(q[0]).toFixed(1)+'" cy="'+Y(q[1]).toFixed(1)+'" r="3.6" fill="var(--surface)" stroke="'+color+'" stroke-width="2"/>'; });
+    return o;
+  }
+  s += series(rB,pB,'var(--series-b)') + series(rA,pA,'var(--accent)');
+  svg.innerHTML = s;
+
+  /* ---------- threshold simulator ---------- */
+  var probs = [0.95,0.85,0.80,0.70,0.60,0.50,0.40,0.30,0.20,0.10];
+  var truth = [1,0,1,1,0,1,0,0,1,0];
+  var thr = document.getElementById('thr');
+  var thrv = document.getElementById('thrv');
+  var imgs = document.getElementById('imgs');
+  var simres = document.getElementById('simres');
+  function sim(){
+    var t = probs[+thr.value];
+    thrv.textContent = fmt(t,2);
+    var tp=0,fp=0,fn=0,tn=0,html='';
+    for (var i=0;i<probs.length;i++){
+      var pred = probs[i] >= t ? 1 : 0, o;
+      if (pred && truth[i]) {o='TP';tp++;} else if (pred && !truth[i]) {o='FP';fp++;} else if (!pred && truth[i]) {o='FN';fn++;} else {o='TN';tn++;}
+      html += '<div class="img '+o+'"><span class="o">'+o+'</span><b>Img '+(i+1)+'</b><span>p = '+fmt(probs[i],2)+'</span><span class="muted">'+(truth[i]?'é gato':'não é gato')+'</span></div>';
+    }
+    imgs.innerHTML = html;
+    var P = tp+fp ? tp/(tp+fp) : 0, R = tp/(tp+fn), F = (2*tp)/(2*tp+fp+fn);
+    simres.innerHTML =
+      '<div class="r"><span class="k">Contagem</span><span class="v">TP '+tp+' · FP '+fp+' · FN '+fn+' · TN '+tn+'</span></div>'+
+      '<div class="r"><span class="k">Precision</span><span class="big">'+fmt(P)+'</span><span class="v">'+tp+' / ('+tp+' + '+fp+')</span></div>'+
+      '<div class="r"><span class="k">Recall</span><span class="big">'+fmt(R)+'</span><span class="v">'+tp+' / ('+tp+' + '+fn+')</span></div>'+
+      '<div class="r"><span class="k">F1</span><span class="big">'+fmt(F)+'</span><span class="v">2·'+tp+' / (2·'+tp+' + '+fp+' + '+fn+')</span></div>';
+  }
+  thr.addEventListener('input', sim);
+  sim();
+
+  /* ---------- confusion matrix explorer ---------- */
+  var C = ['HF','AN','MD','CS','SD','PS','BS','PT'];
+  var names = {HF:'HF · Healthy Fruits (frutos sadios)',AN:'AN · Anthracnose (antracnose)',MD:'MD · Mechanical Damage (dano mecânico)',CS:'CS · Chocolate Spot',SD:'SD · Sticky Disease',PS:'PS · Physiological Spot',BS:'BS · Black Spot (pinta preta)',PT:'PT · Phytophthora Blight'};
+  var M = [
+    [331,0,50,0,23,28,19,0],
+    [0,11,0,0,0,0,1,0],
+    [110,0,69,0,0,0,0,2],
+    [0,0,0,183,0,12,7,0],
+    [62,0,0,0,44,9,0,0],
+    [0,0,39,17,0,155,79,0],
+    [0,4,0,52,0,1,233,0],
+    [0,3,0,0,0,0,0,10]
+  ];
+  var rowT = M.map(function(r){return r.reduce(function(a,b){return a+b;},0);});
+  var colT = C.map(function(_,j){return M.reduce(function(a,r){return a+r[j];},0);});
+  var total = rowT.reduce(function(a,b){return a+b;},0);
+  var chips = document.getElementById('cmchips');
+  var table = document.getElementById('cmtable');
+  var cmres = document.getElementById('cmres');
+  var cmname = document.getElementById('cmname');
+  C.forEach(function(c,k){
+    var b = document.createElement('button');
+    b.type='button'; b.className='chip'; b.textContent=c; b.id='cm-'+c;
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click', function(){ select(k); });
+    chips.appendChild(b);
+  });
+  function select(k){
+    C.forEach(function(c,i){ document.getElementById('cm-'+c).setAttribute('aria-pressed', i===k?'true':'false'); });
+    var h = '<thead><tr><th class="corner">Real ↓ · Previsto →</th>';
+    C.forEach(function(c){ h+='<th>'+c+'</th>'; });
+    h += '<th>Total</th></tr></thead><tbody>';
+    for (var i=0;i<C.length;i++){
+      h += '<tr><th class="rowh">'+C[i]+'</th>';
+      for (var j=0;j<C.length;j++){
+        var v = M[i][j], cls = [];
+        if (i===j) cls.push('diag');
+        if (i===k && j===k) cls.push('is-tp');
+        else if (j===k && v) cls.push('is-fp');
+        else if (i===k && v) cls.push('is-fn');
+        h += '<td class="'+cls.join(' ')+'">'+(v? v : '')+'</td>';
+      }
+      h += '<td class="tot'+(i===k?' is-rowtot':'')+'">'+rowT[i]+'</td></tr>';
+    }
+    h += '<tr><th class="rowh">Total</th>';
+    for (var j2=0;j2<C.length;j2++){ h+='<td class="tot'+(j2===k?' is-coltot':'')+'">'+colT[j2]+'</td>'; }
+    h += '<td class="tot">'+total+'</td></tr></tbody>';
+    table.innerHTML = h;
+    var tp = M[k][k], fp = colT[k]-tp, fn = rowT[k]-tp;
+    var P = tp/(tp+fp), R = tp/(tp+fn), F = 2*tp/(2*tp+fp+fn);
+    cmname.textContent = 'Classe selecionada: '+names[C[k]];
+    cmres.innerHTML =
+      '<div class="r"><span class="k">TP · FP · FN</span><span class="v">TP = '+tp+'</span><span class="v">FP = '+colT[k]+' − '+tp+' = '+fp+'</span><span class="v">FN = '+rowT[k]+' − '+tp+' = '+fn+'</span></div>'+
+      '<div class="r"><span class="k">Precision</span><span class="big">'+fmt(P)+'</span><span class="v">'+tp+' / '+colT[k]+' = '+fmt(P*100,1)+'%</span></div>'+
+      '<div class="r"><span class="k">Recall</span><span class="big">'+fmt(R)+'</span><span class="v">'+tp+' / '+rowT[k]+' = '+fmt(R*100,1)+'%</span></div>'+
+      '<div class="r"><span class="k">F1</span><span class="big">'+fmt(F)+'</span><span class="v">2·'+tp+' / (2·'+tp+' + '+fp+' + '+fn+')</span></div>';
+  }
+  select(4);
+
+  /* ---------- checklist ---------- */
+  var KEY = 'guia-ia-checklist';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#check input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e) { saved = {}; }
+  boxes.forEach(function(b){ if (saved[b.id]) b.checked = true; b.addEventListener('change', upd); });
+  function upd(){
+    var st = {}, n = 0;
+    boxes.forEach(function(b){ if (b.checked){ st[b.id]=1; n++; } });
+    try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {}
+    document.getElementById('prog').style.width = (100*n/boxes.length)+'%';
+    document.getElementById('progtxt').textContent = n+' de '+boxes.length+' itens dominados';
+  }
+  upd();
+
+  /* ---------- nav highlight ---------- */
+  var ids = ['visao','mapa','plano','prova','metricas','clustering','generalizacao','estatistica','introducao','formulas','treino','checklist'];
+  var links = Array.prototype.slice.call(document.querySelectorAll('#sidenav a, #topnav a'));
+  function onScroll(){
+    var cur = ids[0];
+    for (var i=0;i<ids.length;i++){
+      var el = document.getElementById(ids[i]);
+      if (el && el.getBoundingClientRect().top < 120) cur = ids[i];
+    }
+    links.forEach(function(a){
+      var on = a.getAttribute('href') === '#'+cur;
+      a.classList.toggle('on', on);
+      if (on && a.parentElement.id === 'topnav' && a.scrollIntoView && window.innerWidth < 1120) {
+        var nav = a.parentElement, l = a.offsetLeft, r = l + a.offsetWidth;
+        if (l < nav.scrollLeft || r > nav.scrollLeft + nav.clientWidth) nav.scrollLeft = l - 16;
+      }
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
