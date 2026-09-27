@@ -15,7 +15,7 @@
   --hl:#FFE27A; --hl-ink:#141C26;
   --tp:#17804F; --tp-soft:#DAF1E4; --fp:#A86300; --fp-soft:#FAE9CF; --fn:#B53030; --fn-soft:#F7DCDC;
   --out:#6A4DAF; --out-soft:#ECE6F8;
-  --series-b:#C2410C;
+  --series-b:#C2410C; --series-b-soft:#FBE4D5;
   --shadow:0 1px 2px rgba(20,28,38,.06),0 6px 20px rgba(20,28,38,.05);
   --f-display:"Literata",Georgia,"Times New Roman",serif;
   --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -29,7 +29,7 @@
     --hl:#5E4C0C; --hl-ink:#FFF4C9;
     --tp:#5CD49B; --tp-soft:#123425; --fp:#F0AF52; --fp-soft:#3A2A10; --fn:#F28383; --fn-soft:#3E1B1B;
     --out:#BBA5F2; --out-soft:#2A2340;
-    --series-b:#FB923C;
+    --series-b:#FB923C; --series-b-soft:#3D2416;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
     color-scheme:dark;
   }
@@ -40,7 +40,7 @@
   --hl:#5E4C0C; --hl-ink:#FFF4C9;
   --tp:#5CD49B; --tp-soft:#123425; --fp:#F0AF52; --fp-soft:#3A2A10; --fn:#F28383; --fn-soft:#3E1B1B;
   --out:#BBA5F2; --out-soft:#2A2340;
-  --series-b:#FB923C;
+  --series-b:#FB923C; --series-b-soft:#3D2416;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
   color-scheme:dark;
 }
@@ -157,6 +157,11 @@ td.num,th.num{text-align:right}
 .q-num{font-family:var(--f-display);font-size:1.5rem;font-weight:700}
 .q-pts{font-variant-numeric:tabular-nums;font-weight:700;color:var(--muted)}
 .q-stmt{color:var(--muted);font-size:.96rem;border-left:0;padding:10px 14px;background:var(--surface-2);border-radius:8px}
+.q-stmt .lbl{display:block;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:2px}
+.subq{display:flex;flex-direction:column;gap:2px;padding:10px 14px;background:var(--accent-soft);border-radius:8px;margin-top:6px}
+.subq:first-child{margin-top:0}
+.subq .sq-l{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.subq .sq-t{font-weight:700;color:var(--ink)}
 .ans{display:flex;flex-direction:column;gap:10px}
 .ans h4{color:var(--accent)}
 .vf{display:flex;flex-direction:column;gap:10px}
@@ -238,6 +243,39 @@ details .dbody{padding:0 16px 16px 16px;display:flex;flex-direction:column;gap:1
 .progress div{height:100%;background:var(--tp);width:0;transition:width .2s}
 
 .foot{padding-top:48px;color:var(--muted);font-size:.88rem}
+/* AP visual */
+.apv h4{margin-top:6px}
+.apv .ptsgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.apv .ptsgrid caption{caption-side:top;text-align:left;font-weight:700;padding:8px 12px 0;font-size:.9rem}
+.apv tr.first td{font-weight:700}
+.apv .ctrl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+.apv .ctrl .grp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.btn{font:inherit;font-size:.88rem;font-weight:700;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 12px;border-radius:8px;cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.apv[data-model="B"] .btn.primary{background:var(--series-b);border-color:var(--series-b);color:var(--surface)}
+.apv[data-model="B"] .chip[aria-pressed="true"]{background:var(--series-b);border-color:var(--series-b);color:var(--surface)}
+.apv .chart text.alab{fill:var(--ink);font-family:var(--f-mono);font-size:11px}
+.apv .chart text.alab.cur{font-weight:600}
+.apv .chart text.note{fill:var(--muted);font-family:var(--f-body);font-size:11px;paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.apv .steps td,.apv .steps th{padding:5px 10px}
+.apv .steps tr.done td{color:var(--ink)}
+.apv .steps tr.todo td{color:var(--muted)}
+.apv .steps tr.cur td{background:var(--accent-soft);font-weight:700}
+.apv[data-model="B"] .steps tr.cur td{background:var(--series-b-soft)}
+.apv .steps tr.total td{border-top:2px solid var(--line);font-weight:700}
+.stepbtn{font:inherit;font-family:var(--f-mono);font-size:.8rem;width:28px;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.stepbtn:hover{border-color:var(--accent)}
+.cmp{display:flex;flex-direction:column;gap:10px}
+.cmp-row{display:grid;grid-template-columns:78px 1fr 64px;gap:10px;align-items:center;font-variant-numeric:tabular-nums}
+.cmp-row .lab{font-weight:700}
+.cmp-row .val{font-family:var(--f-mono);font-weight:600;text-align:right}
+.cmp-track{height:24px;background:var(--surface-2);border-radius:6px;overflow:hidden;display:flex}
+.cmp-a{background:var(--accent)}
+.cmp-b{background:var(--series-b)}
+.cmp-extra{background:repeating-linear-gradient(135deg,var(--series-b) 0 3px,var(--series-b-soft) 3px 6px)}
+.side a.sub{padding-left:22px;font-size:.88rem}
 .theme-btn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;font:inherit;font-size:.88rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow);cursor:pointer}
 .theme-btn:hover{border-color:var(--accent)}
 .theme-btn .dot{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
@@ -256,6 +294,7 @@ details .dbody{padding:0 16px 16px 16px;display:flex;flex-direction:column;gap:1
     <a href="#prova">Prova resolvida</a>
     <div class="navlabel">Guia por tema</div>
     <a href="#metricas">Métricas <span class="pts">5,0</span></a>
+    <a href="#ap-visual" class="sub">AP passo a passo (Q1)</a>
     <a href="#clustering">Não supervisionado <span class="pts">2,5</span></a>
     <a href="#generalizacao">Supervisionado e overfitting <span class="pts">2,5</span></a>
     <a href="#estatistica">Estatística <span class="pts">0</span></a>
@@ -269,7 +308,7 @@ details .dbody{padding:0 16px 16px 16px;display:flex;flex-direction:column;gap:1
 
 <main>
 <nav class="topnav" id="topnav" aria-label="Seções">
-  <a href="#visao">Resumo</a><a href="#mapa">Prova × slides</a><a href="#plano">Plano</a><a href="#prova">Prova resolvida</a><a href="#metricas">Métricas</a><a href="#clustering">Clustering</a><a href="#generalizacao">Overfitting</a><a href="#estatistica">Estatística</a><a href="#introducao">Introdução</a><a href="#formulas">Fórmulas</a><a href="#treino">Treino</a><a href="#checklist">Checklist</a>
+  <a href="#visao">Resumo</a><a href="#mapa">Prova × slides</a><a href="#plano">Plano</a><a href="#prova">Prova resolvida</a><a href="#metricas">Métricas</a><a href="#ap-visual">AP passo a passo</a><a href="#clustering">Clustering</a><a href="#generalizacao">Overfitting</a><a href="#estatistica">Estatística</a><a href="#introducao">Introdução</a><a href="#formulas">Fórmulas</a><a href="#treino">Treino</a><a href="#checklist">Checklist</a>
 </nav>
 
 <!-- ================= VISÃO GERAL ================= -->
@@ -375,7 +414,7 @@ details .dbody{padding:0 16px 16px 16px;display:flex;flex-direction:column;gap:1
   <!-- Q1 -->
   <article class="q" id="q1">
     <div class="q-head"><span class="q-num">Q1</span><span class="q-pts">1,5 pt</span><span class="tag in">04 Métricas · slides 25–31</span></div>
-    <div class="q-stmt">Uma fábrica testa dois modelos para identificar <strong>maçãs defeituosas</strong>. São dadas as curvas Precision-Recall (threshold de 0,1 a 1,0). a) Qual modelo apresenta melhor desempenho geral? Justifique. b) Se o objetivo for evitar a aprovação de frutas defeituosas, qual métrica deveria ser priorizada além do AP?</div>
+    <div class="q-stmt"><span class="lbl">Enunciado</span>Uma fábrica está testando sistemas de IA para automatizar o controle de qualidade. Dois modelos diferentes foram treinados para identificar <strong>maçãs defeituosas</strong>. Abaixo estão as curvas Precision-Recall para cada um deles:</div>
     <div class="tbl compact">
       <table>
         <thead><tr><th class="num">Threshold</th><th class="num">Recall A</th><th class="num">Precision A</th><th class="num">Recall B</th><th class="num">Precision B</th></tr></thead>
@@ -390,24 +429,17 @@ details .dbody{padding:0 16px 16px 16px;display:flex;flex-direction:column;gap:1
       </div>
     </div>
     <div class="ans">
-      <h4>a) Resposta: Modelo A</h4>
-      <p>Comparando threshold a threshold, o Modelo A tem <mark>recall maior ou igual e precision maior que o B em todos os limiares</mark>. Exemplo em 0,5: A tem R = 0,60 e P = 0,80; B tem R = 0,50 e P = 0,75. Qualquer ponto de operação que a fábrica escolher, A detecta mais maçãs defeituosas e erra menos quando acusa um defeito. Por isso sua curva PR tem área maior, ou seja, <strong>AP maior</strong> (AP resume precision e recall em todos os thresholds numa única métrica, slide 26).</p>
-      <details>
-        <summary>Se a questão pedir o AP calculado</summary>
-        <div class="dbody">
-          <p>Somando <span class="mono">ΔRecall × Precision</span> desde recall 0 (padrão da literatura):</p>
-          <div class="calc">AP(A) = 0,1×0,50 + 0,1×(0,55+0,65+0,70+0,75+0,80+0,85+0,92+0,95+1,00)
-      = 0,050 + 0,717 = 0,767
-AP(B) = 0,05×0,40 + 0,05×0,45 + 0,1×(0,55+0,65+0,70+0,75+0,80+0,88)
-        + 0,15×0,90 + 0,15×0,95
-      = 0,020 + 0,0225 + 0,433 + 0,135 + 0,1425 = 0,753</div>
-          <div class="call warn">
-            <div class="ct">Pegadinha</div>
-            <p>No método dos slides o professor começa a somar no <em>primeiro</em> valor de recall e não soma a faixa de 0 até ele. Aplicado aqui, dá A = 0,717 e B = 0,733, porque a curva de B começa em recall 0,05 e ganha uma faixa extra. As curvas quase coincidem entre recall 0,2 e 0,6. Na prova, a justificativa mais segura é a comparação threshold a threshold. Se calcular o AP, diga qual método usou.</p>
-          </div>
-        </div>
-      </details>
-      <h4>b) Resposta: Recall (sensibilidade) da classe “defeituosa”</h4>
+      <div class="subq"><span class="sq-l">Pergunta a)</span><span class="sq-t">Qual modelo apresenta melhor desempenho geral? Justifique.</span></div>
+      <h4>Resposta: Modelo A, mostrando o AP</h4>
+      <p>Comparando threshold a threshold, o Modelo A tem <mark>recall maior ou igual e precision maior que o B em todos os limiares</mark>. Exemplo em 0,5: A tem R = 0,60 e P = 0,80; B tem R = 0,50 e P = 0,75. Qualquer ponto de operação que a fábrica escolher, A detecta mais maçãs defeituosas e erra menos quando acusa um defeito.</p>
+      <p>Pelo método dos slides, <strong>AP(A) = 0,717</strong> e <strong>AP(B) = 0,733</strong>. O B fica 0,016 acima só porque sua curva começa em recall 0,05 e ganha a faixa 0,05 → 0,10 (0,0225), que o A não tem. Na faixa que os dois cobrem (recall 0,10 a 1,00), o A soma 0,717 contra 0,7105 do B.</p>
+      <p><a href="#ap-visual">Ver o cálculo do AP passo a passo, com os retângulos de cada degrau →</a></p>
+      <div class="call warn">
+        <div class="ct">Pegadinha</div>
+        <p>O item b) fala em “além do AP”, então o professor provavelmente espera o AP no item a). Como o AP pelo método dos slides deixa o B levemente à frente, escreva as duas contas, explique de onde vem a diferença e conclua com a comparação threshold a threshold. Contando a área desde recall 0 (fora do método dos slides), o A também vence pelo AP: 0,767 contra 0,753.</p>
+      </div>
+      <div class="subq"><span class="sq-l">Pergunta b)</span><span class="sq-t">Se o objetivo da empresa for evitar a aprovação de frutas defeituosas, qual métrica deveria ser priorizada além do AP?</span></div>
+      <h4>Resposta: Recall (sensibilidade) da classe “defeituosa”</h4>
       <p>A classe positiva é “maçã defeituosa”. Aprovar uma maçã defeituosa é um <strong>falso negativo</strong> (defeituosa classificada como boa). O recall = TP / (TP + FN) mede quantas das defeituosas o modelo consegue pegar, então <mark>maximizar o recall minimiza as frutas defeituosas aprovadas</mark>. Na prática, escolhe-se um threshold mais baixo (no Modelo A, threshold 0,1 dá recall 1,00). O custo é descartar algumas maçãs boas (FP), que é o erro mais barato nesse caso. Slide 12: recall é usado “quando é crítico identificar todos os exemplos positivos”.</p>
     </div>
   </article>
@@ -415,8 +447,9 @@ AP(B) = 0,05×0,40 + 0,05×0,45 + 0,1×(0,55+0,65+0,70+0,75+0,80+0,88)
   <!-- Q2 -->
   <article class="q" id="q2">
     <div class="q-head"><span class="q-num">Q2</span><span class="q-pts">1,0 pt</span><span class="tag part">Não supervisionado · slides 3, 10–11</span></div>
-    <div class="q-stmt">Explique o que é aprendizado supervisionado e não supervisionado. Cite as principais características e dê um exemplo de uso de cada um.</div>
     <div class="ans">
+      <div class="subq"><span class="sq-l">Pergunta</span><span class="sq-t">Explique o que é aprendizado supervisionado e não supervisionado. Cite as principais características e dê um exemplo de uso de cada um.</span></div>
+      <h4>Resposta</h4>
       <div class="tbl compact">
         <table>
           <thead><tr><th></th><th>Supervisionado</th><th>Não supervisionado</th></tr></thead>
@@ -436,8 +469,9 @@ AP(B) = 0,05×0,40 + 0,05×0,45 + 0,1×(0,55+0,65+0,70+0,75+0,80+0,88)
   <!-- Q3 -->
   <article class="q" id="q3">
     <div class="q-head"><span class="q-num">Q3</span><span class="q-pts">1,0 pt</span><span class="tag out">Fora dos slides enviados</span></div>
-    <div class="q-stmt">O que é overfitting e underfitting?</div>
     <div class="ans">
+      <div class="subq"><span class="sq-l">Pergunta</span><span class="sq-t">O que é overfitting e underfitting?</span></div>
+      <h4>Resposta</h4>
       <p><strong>Overfitting (sobreajuste):</strong> o modelo se ajusta demais aos dados de treino, “decorando” inclusive ruídos e particularidades. Tem <mark>erro baixo no treino e erro alto no teste</mark>, ou seja, não generaliza para dados novos. Causas comuns: modelo complexo demais, poucos dados ou pouca variedade de exemplos, treino longo demais, avaliar com os próprios dados de treino. Como evitar: mais dados e mais variados, regularização (o Dropout da AlexNet, slide 72 da Introdução), early stopping, modelo mais simples, separação treino/validação/teste, validação cruzada.</p>
       <p><strong>Underfitting (subajuste):</strong> o modelo é simples demais e não captura o padrão nem nos dados de treino. Tem <mark>erro alto no treino e no teste</mark>. Exemplo dos slides: um perceptron de uma camada tentando separar o XOR com uma única reta (Introdução, slides 61–64). Como evitar: modelo mais complexo (ex.: perceptron multicamadas), mais atributos relevantes, treinar mais.</p>
       <p class="small muted">Resumo para decorar: overfitting = vai bem no treino e mal no teste; underfitting = vai mal nos dois.</p>
@@ -447,18 +481,20 @@ AP(B) = 0,05×0,40 + 0,05×0,45 + 0,1×(0,55+0,65+0,70+0,75+0,80+0,88)
   <!-- Q4 -->
   <article class="q" id="q4">
     <div class="q-head"><span class="q-num">Q4</span><span class="q-pts">2,0 pts</span><span class="tag in">04 Métricas · slides 4, 5, 9–15, 25</span></div>
-    <div class="q-stmt">Um sistema de reconhecimento facial para controle de acesso em uma escola apresenta alta taxa de <strong>falsos negativos</strong>. Um integrante sugeriu usar um <strong>threshold maior</strong>. a) A recomendação é apropriada? Por quê? (b não aparece nas fotos) c) Como essa recomendação afeta o Precision e o Recall?</div>
+    <div class="q-stmt"><span class="lbl">Enunciado</span>Durante o desenvolvimento de um sistema de reconhecimento facial para controle de acesso em uma escola, foi observada uma alta taxa de <strong>falsos negativos</strong>. Para tentar resolver o problema, um integrante da equipe sugeriu utilizar um <strong>threshold maior</strong>.</div>
     <div class="ans">
       <p class="small muted">Classe positiva: “rosto reconhecido como pessoa autorizada”. Falso negativo = aluno ou funcionário autorizado que o sistema não reconhece e fica barrado.</p>
-      <h4>a) Não é apropriada</h4>
+      <div class="subq"><span class="sq-l">Pergunta a)</span><span class="sq-t">A recomendação é apropriada? Por quê?</span></div>
+      <h4>Resposta: não é apropriada</h4>
       <p>Aumentar o threshold exige uma probabilidade maior para classificar como positivo. O modelo passa a dizer “positivo” menos vezes, e casos que antes eram TP (pessoa autorizada com probabilidade 0,6, por exemplo) viram FN. <mark>Um threshold maior aumenta os falsos negativos</mark>, piorando exatamente o problema. Para reduzir FN, o correto é <strong>diminuir</strong> o threshold (ou melhorar o modelo e os dados de treino).</p>
-      <h4>b) Item não visível nas fotos</h4>
-      <p>Ficou na quebra de página. As variações mais prováveis são:</p>
+      <div class="subq"><span class="sq-l">Pergunta b)</span><span class="sq-t">Enunciado não aparece nas fotos (ficou na quebra de página).</span></div>
+      <h4>Respostas para as versões mais prováveis</h4>
       <ul>
         <li><em>“O que deveria ser feito?”</em> Diminuir o threshold, aceitando mais FP (pessoas não autorizadas liberadas), ou melhorar o modelo (mais fotos por pessoa, ângulos e iluminação variados).</li>
         <li><em>“O que acontece com os falsos positivos?”</em> Com threshold maior, os FP diminuem: menos pessoas não autorizadas entram.</li>
       </ul>
-      <h4>c) Precision tende a subir, Recall cai</h4>
+      <div class="subq"><span class="sq-l">Pergunta c)</span><span class="sq-t">Como esta recomendação afeta o Precision e o Recall?</span></div>
+      <h4>Resposta: a precision tende a subir e o recall cai</h4>
       <div class="calc">Threshold ↑  →  menos previsões positivas
 FP ↓  →  Precision = TP / (TP + FP)  tende a ↑   (quando libera, quase sempre acerta)
 FN ↑  →  Recall    = TP / (TP + FN)  ↓          (mais autorizados ficam barrados)</div>
@@ -469,7 +505,7 @@ FN ↑  →  Recall    = TP / (TP + FN)  ↓          (mais autorizados ficam ba
   <!-- Q5 -->
   <article class="q" id="q5">
     <div class="q-head"><span class="q-num">Q5</span><span class="q-pts">1,5 pt</span><span class="tag in">Não supervisionado · slides 19–21, 28–29, 34</span></div>
-    <div class="q-stmt">Considerando os clusters abaixo e o modelo hierárquico divisivo: a) qual o valor do centroide de cada cluster? b) qual o SSE de cada cluster? c) qual cluster deve ser escolhido para uma nova divisão? Justifique. <br><span class="mono">SSE = Σ<sub>j</sub> Σ<sub>x∈Cj</sub> ‖x − μ<sub>j</sub>‖²</span></div>
+    <div class="q-stmt"><span class="lbl">Enunciado</span>Considerando os clusters abaixo e o modelo hierárquico divisivo, responda: <br><span class="mono">SSE = Σ<sub>j</sub> Σ<sub>x∈Cj</sub> ‖x − μ<sub>j</sub>‖²</span></div>
     <div class="grid2">
       <div class="tbl compact"><table>
         <thead><tr><th>Cluster 0</th><th class="num">Idade</th><th class="num">Peso</th><th class="num">Altura</th></tr></thead>
@@ -489,10 +525,12 @@ FN ↑  →  Recall    = TP / (TP + FN)  ↓          (mais autorizados ficam ba
         </tbody></table></div>
     </div>
     <div class="ans">
-      <h4>a) Centroides (média de cada atributo)</h4>
+      <div class="subq"><span class="sq-l">Pergunta a)</span><span class="sq-t">Qual o valor do centroide de cada cluster?</span></div>
+      <h4>Resposta: média de cada atributo</h4>
       <div class="calc">C0: idade (25+30+27)/3 = 82/3 = 27,33   peso 181/3 = 60,33   altura 455/3 = 151,67
 C2: idade (60+32+45)/3 = 137/3 = 45,67  peso 255/3 = 85,00   altura 555/3 = 185,00</div>
-      <h4>b) SSE (distância ao quadrado de cada ponto até o centroide, somada; sem raiz)</h4>
+      <div class="subq"><span class="sq-l">Pergunta b)</span><span class="sq-t">Qual o SSE de cada cluster?</span></div>
+      <h4>Resposta: soma das distâncias ao quadrado até o centroide (sem raiz)</h4>
       <div class="calc">C0
 d²(A) = (25−27,33)² + (56−60,33)² + (160−151,67)² = 5,44 + 18,78 + 69,44 =  93,67
 d²(F) = (30−27,33)² + (65−60,33)² + (150−151,67)² = 7,11 + 21,78 +  2,78 =  31,67
@@ -504,7 +542,8 @@ d²(D) = (60−45,67)² + (90−85)²  + (190−185)² = 205,44 +  25 +  25 = 25
 d²(E) = (32−45,67)² + (100−85)² + (175−185)² = 186,78 + 225 + 100 = 511,78
 d²(H) = (45−45,67)² + (65−85)²  + (190−185)² =   0,44 + 400 +  25 = 425,44
 SSE(C2) = 255,44 + 511,78 + 425,44 = <mark>1192,67</mark></div>
-      <h4>c) Cluster 2</h4>
+      <div class="subq"><span class="sq-l">Pergunta c)</span><span class="sq-t">Qual dos clusters deve ser escolhido para uma nova divisão? Justifique sua resposta.</span></div>
+      <h4>Resposta: o Cluster 2</h4>
       <p>O critério do divisivo (passo 8, slide 21) é escolher <strong>o cluster com maior SSE</strong>. SSE(C2) = 1192,67 é muito maior que SSE(C0) = 170,00, o que indica que os elementos de C2 estão mais espalhados em torno do centroide, ou seja, o cluster é menos homogêneo e é o que mais se beneficia de uma nova divisão.</p>
       <div class="call warn">
         <div class="ct">Errata do slide</div>
@@ -516,7 +555,7 @@ SSE(C2) = 255,44 + 511,78 + 425,44 = <mark>1192,67</mark></div>
   <!-- Q6 -->
   <article class="q" id="q6">
     <div class="q-head"><span class="q-num">Q6</span><span class="q-pts">1,5 pt</span><span class="tag part">Itens 5 e 6 nos slides · 1 a 4 fora</span></div>
-    <div class="q-stmt">Marque Verdadeiro (V) ou Falso (F).</div>
+    <div class="subq"><span class="sq-l">Pergunta</span><span class="sq-t">Marque Verdadeiro (V) ou Falso (F) em cada afirmação.</span></div>
     <div class="vf">
       <div class="vf-item"><div class="vf-badge v">V</div><div><strong>O overfitting pode ocorrer se não houver separação adequada entre treino e teste.</strong><br><span class="muted">Sem separação o modelo é avaliado nos dados que já decorou: o sobreajuste acontece e passa despercebido, e não há validação para ajustar ou parar o treino. É a resposta mais provável do gabarito.</span></div></div>
       <div class="vf-item"><div class="vf-badge f">F</div><div><strong>Normalmente, utiliza-se 70% para teste, 15% para treino e 15% para validação.</strong><br><span class="muted">Inverteram: o usual é <mark>70% treino, 15% validação, 15% teste</mark>. O treino fica com a maior parte.</span></div></div>
@@ -530,16 +569,19 @@ SSE(C2) = 255,44 + 511,78 + 425,44 = <mark>1192,67</mark></div>
   <!-- Q7 -->
   <article class="q" id="q7">
     <div class="q-head"><span class="q-num">Q7</span><span class="q-pts">1,5 pt</span><span class="tag in">04 Métricas · slides 17–23</span></div>
-    <div class="q-stmt">Dada a matriz de confusão (a mesma do slide 18), calcule para a classe <strong>SD</strong>: a) Precision b) Recall c) F1-score.</div>
+    <div class="q-stmt"><span class="lbl">Enunciado</span>Dada a matriz de confusão abaixo (a mesma do slide 18), calcule para a classe <strong>SD</strong>:</div>
     <div class="ans">
-      <p>Na matriz do professor, as <strong>linhas são o real</strong> (Ground Truth) e as <strong>colunas são a previsão</strong> (Human Expert).</p>
+      <p>Antes dos três itens, tire TP, FP e FN. Na matriz do professor, as <strong>linhas são o real</strong> (Ground Truth) e as <strong>colunas são a previsão</strong> (Human Expert).</p>
       <div class="calc">TP = célula SD×SD                       = 44
 FP = total da COLUNA SD − TP  = 67 − 44  = 23   (23 HF previstos como SD)
-FN = total da LINHA SD − TP   = 115 − 44 = 71   (62 viraram HF, 9 viraram PS)
-
-a) Precision = 44 / (44 + 23) = 44 / 67  = <mark>0,657 = 65,7%</mark>
-b) Recall    = 44 / (44 + 71) = 44 / 115 = <mark>0,383 = 38,3%</mark>
-c) F1 = 2 × (0,657 × 0,383) / (0,657 + 0,383) = 0,503 / 1,040 = <mark>0,484 = 48,4%</mark></div>
+FN = total da LINHA SD − TP   = 115 − 44 = 71   (62 viraram HF, 9 viraram PS)</div>
+      <div class="subq"><span class="sq-l">Pergunta a)</span><span class="sq-t">Precision (0,5 ponto)</span></div>
+      <div class="calc">Precision = TP / (TP + FP) = 44 / (44 + 23) = 44 / 67 = <mark>0,657 = 65,7%</mark></div>
+      <div class="subq"><span class="sq-l">Pergunta b)</span><span class="sq-t">Recall (0,5 ponto)</span></div>
+      <div class="calc">Recall = TP / (TP + FN) = 44 / (44 + 71) = 44 / 115 = <mark>0,383 = 38,3%</mark></div>
+      <div class="subq"><span class="sq-l">Pergunta c)</span><span class="sq-t">F1-score (0,5 ponto)</span></div>
+      <div class="calc">F1 = 2 × (P × R) / (P + R) = 2 × (0,657 × 0,383) / (0,657 + 0,383)
+   = 0,503 / 1,040 = <mark>0,484 = 48,4%</mark></div>
       <p>Interpretação: quando o especialista diz “SD”, acerta 2 de cada 3 vezes, mas deixa passar 62% dos casos reais de SD (a maioria confundida com fruto sadio). O F1 baixo mostra o desequilíbrio entre precision e recall.</p>
       <p class="small">Confira no <a href="#cm">explorador da matriz</a>, que já abre na classe SD.</p>
     </div>
@@ -682,6 +724,68 @@ mAP = (0,335 + 0,294) / 2 = 0,3145</div>
         <p class="small muted">O slide 36 escreve AP(Carros) = 0,376 e chega a mAP = 0,335, o que não bate com os 0,335 calculados no slide 35. Se cair algo parecido, mostre as contas.</p>
       </div>
     </details>
+  </div>
+
+  <div class="panel apv" id="ap-visual" data-model="A">
+    <div class="eyebrow">Q1 da prova · método dos slides 29–31</div>
+    <h3>AP passo a passo com os dados da prova</h3>
+    <p>A ideia do método: cada vez que o recall aumenta, forma-se um <strong>retângulo</strong>. A largura é o aumento do recall (ΔR) e a altura é a precision do ponto de chegada. O AP é a soma das áreas desses retângulos.</p>
+
+    <h4>Passo 1 · Transforme a tabela em pontos e ordene pelo recall</h4>
+    <p class="small">Na tabela da prova o threshold vai de 0,1 a 1,0, mas o recall <em>diminui</em> quando o threshold sobe. Para o AP, leia a tabela <strong>de baixo para cima</strong>: o threshold 1,0 tem o menor recall e é o ponto de partida.</p>
+    <div class="ptsgrid">
+      <div class="tbl compact"><table>
+        <caption style="color:var(--accent)">Modelo A · ordenado</caption>
+        <thead><tr><th>Ordem</th><th class="num">Threshold</th><th class="num">Recall</th><th class="num">Precision</th></tr></thead>
+        <tbody id="apptsA"></tbody></table></div>
+      <div class="tbl compact"><table>
+        <caption style="color:var(--series-b)">Modelo B · ordenado</caption>
+        <thead><tr><th>Ordem</th><th class="num">Threshold</th><th class="num">Recall</th><th class="num">Precision</th></tr></thead>
+        <tbody id="apptsB"></tbody></table></div>
+    </div>
+    <p class="small muted">Cada recall aparece uma vez só, então aqui não existe o caso de “várias precisions para o mesmo recall” (em que o slide manda usar a máxima). Outra diferença para o exemplo do gato: nesta prova a precision cresce junto com o recall, por isso a curva sobe. O método é o mesmo.</p>
+
+    <h4>Passo 2 · Some os retângulos, um degrau de cada vez</h4>
+    <div class="ctrl">
+      <div class="grp" role="group" aria-label="Modelo">
+        <button type="button" class="chip" id="apm-A" aria-pressed="true">Modelo A</button>
+        <button type="button" class="chip" id="apm-B" aria-pressed="false">Modelo B</button>
+      </div>
+      <div class="grp">
+        <button type="button" class="btn" id="apprev">← Anterior</button>
+        <button type="button" class="btn primary" id="apnext">Próximo degrau →</button>
+        <button type="button" class="btn" id="apall">Ver resultado</button>
+      </div>
+    </div>
+    <div class="chart">
+      <svg id="apchart" viewBox="0 0 560 320" role="img" aria-label="Retângulos do cálculo do AP sob a curva precision-recall"></svg>
+    </div>
+    <div class="calc" id="apstep" aria-live="polite"></div>
+    <div class="tbl compact steps"><table>
+      <thead><tr><th>Degrau</th><th>Recall</th><th class="num">ΔR</th><th class="num">Precision</th><th class="num">Área = ΔR × P</th><th class="num">Acumulado</th></tr></thead>
+      <tbody id="apsteps"></tbody></table></div>
+    <p class="small muted">A faixa hachurada, do recall 0 até o primeiro ponto, <strong>não entra na conta</strong> no método dos slides (o professor começa a somar no primeiro valor de recall, como no exemplo do gato, que começa em 0,2).</p>
+
+    <h4>Passo 3 · Compare os dois modelos</h4>
+    <div class="cmp">
+      <div class="cmp-row"><span class="lab" style="color:var(--accent)">Modelo A</span><div class="cmp-track"><div class="cmp-a" style="width:71.7%"></div></div><span class="val">0,717</span></div>
+      <div class="cmp-row"><span class="lab" style="color:var(--series-b)">Modelo B</span><div class="cmp-track"><div class="cmp-extra" style="width:2.25%"></div><div class="cmp-b" style="width:71.05%"></div></div><span class="val">0,733</span></div>
+    </div>
+    <div class="tbl compact"><table>
+      <thead><tr><th>Faixa de recall</th><th class="num">Modelo A</th><th class="num">Modelo B</th></tr></thead>
+      <tbody>
+        <tr><td>0,05 → 0,10 (só o B chega aqui; hachurado na barra)</td><td class="num">—</td><td class="num">0,0225</td></tr>
+        <tr><td>0,10 → 1,00 (faixa que os dois cobrem)</td><td class="num"><strong>0,717</strong></td><td class="num">0,7105</td></tr>
+        <tr><td><strong>AP pelo método dos slides</strong></td><td class="num"><strong>0,717</strong></td><td class="num"><strong>0,733</strong></td></tr>
+        <tr><td class="muted">AP contando desde recall 0 (fora do método dos slides)</td><td class="num muted">0,767</td><td class="num muted">0,753</td></tr>
+      </tbody></table></div>
+    <p>Pelo método dos slides, o <strong>B fica 0,016 à frente</strong>. Essa vantagem vem inteira do primeiro degrau (0,05 → 0,10), que só existe porque a curva do B começa num recall mais baixo. Na faixa que os dois modelos cobrem, o A acumula mais área, e em todos os thresholds o A tem precision e recall maiores.</p>
+    <div class="call tip">
+      <div class="ct">Como escrever na prova</div>
+      <p><strong>Pergunta a) da Q1:</strong> Qual modelo apresenta melhor desempenho geral? Justifique.</p>
+      <p>“Calculando o AP pelo método visto em aula (soma de ΔRecall × Precision a partir do primeiro ponto da curva): AP(A) = 0,717 e AP(B) = 0,733. A diferença de 0,016 vem só do trecho de recall 0,05 a 0,10, que apenas o Modelo B alcança. No mesmo intervalo de recall (0,10 a 1,00), o Modelo A acumula mais área (0,717 contra 0,7105) e, em todos os thresholds, tem precision e recall maiores que o B. Portanto o Modelo A tem o melhor desempenho geral.”</p>
+      <p class="small">Mostrando as duas contas e o motivo da diferença, o raciocínio fica certo seja qual for o gabarito. Se tiver chance, pergunte ao professor se o AP deve incluir a faixa desde recall 0.</p>
+    </div>
   </div>
 </section>
 
@@ -1159,12 +1263,132 @@ SSE(C1) = 559,75</div><p>Comparando com C0 (170,00) e C2 (1192,67), o próximo a
   function series(rs, ps, color){
     var pts = rs.map(function(r,i){return [r,ps[i]];}).sort(function(a,b){return a[0]-b[0];});
     var d = pts.map(function(q,i){return (i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1);}).join(' ');
-    var o = '<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.4" stroke-linejoin="round"/>';
-    pts.forEach(function(q){ o+='<circle cx="'+X(q[0]).toFixed(1)+'" cy="'+Y(q[1]).toFixed(1)+'" r="3.6" fill="var(--surface)" stroke="'+color+'" stroke-width="2"/>'; });
+    var o = '<path d="'+d+'" style="fill:none;stroke:'+color+';stroke-width:2.4;stroke-linejoin:round"/>';
+    pts.forEach(function(q){ o+='<circle cx="'+X(q[0]).toFixed(1)+'" cy="'+Y(q[1]).toFixed(1)+'" r="3.6" style="fill:var(--surface);stroke:'+color+';stroke-width:2"/>'; });
     return o;
   }
   s += series(rB,pB,'var(--series-b)') + series(rA,pA,'var(--accent)');
   svg.innerHTML = s;
+
+  /* ---------- AP passo a passo (método dos slides) ---------- */
+  var f4 = function(v){ var t=(Math.round(v*1e4)/1e4).toFixed(4); if (t.charAt(t.length-1)==='0') t=t.slice(0,-1); return t.replace('.',','); };
+  function sortedPts(rs, ps){ return rs.map(function(r,i){return {t:th[i], r:r, p:ps[i]};}).sort(function(a,b){return a.r-b.r;}); }
+  var MODELS = {
+    A:{pts:sortedPts(rA,pA), color:'var(--accent)', soft:'var(--accent-soft)'},
+    B:{pts:sortedPts(rB,pB), color:'var(--series-b)', soft:'var(--series-b-soft)'}
+  };
+  Object.keys(MODELS).forEach(function(key){
+    var Md = MODELS[key], acc = 0; Md.steps = [];
+    for (var i=1;i<Md.pts.length;i++){
+      var a = Md.pts[i-1], b = Md.pts[i];
+      var dr = Math.round((b.r-a.r)*1e4)/1e4;
+      var area = Math.round(dr*b.p*1e5)/1e5;
+      acc = Math.round((acc+area)*1e5)/1e5;
+      Md.steps.push({from:a.r, to:b.r, dr:dr, p:b.p, area:area, acc:acc});
+    }
+    Md.ap = acc;
+    var h = '';
+    Md.pts.forEach(function(q,i){
+      h += '<tr'+(i===0?' class="first"':'')+'><td>'+(i+1)+(i===0?' · início':'')+'</td><td class="num">'+fmt(q.t,1)+'</td><td class="num">'+fmt(q.r,2)+'</td><td class="num">'+fmt(q.p,2)+'</td></tr>';
+    });
+    document.getElementById('appts'+key).innerHTML = h;
+  });
+
+  var apv = document.getElementById('ap-visual');
+  var apsvg = document.getElementById('apchart');
+  var apstep = document.getElementById('apstep');
+  var apsteps = document.getElementById('apsteps');
+  var apprev = document.getElementById('apprev'), apnext = document.getElementById('apnext'), apall = document.getElementById('apall');
+  var st = {m:'A', k:0};
+
+  function renderAP(){
+    var Md = MODELS[st.m], n = Md.steps.length, p0 = Md.pts[0];
+    apv.setAttribute('data-model', st.m);
+    ['A','B'].forEach(function(x){ document.getElementById('apm-'+x).setAttribute('aria-pressed', x===st.m?'true':'false'); });
+
+    var W=560,H=320,mg={l:50,r:16,t:18,b:44};
+    var X=function(r){return mg.l + r*(W-mg.l-mg.r);};
+    var Y=function(p){return mg.t + (1-p)*(H-mg.t-mg.b);};
+    var s = '<defs><pattern id="aphatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--muted);stroke-width:1.3"/></pattern></defs>';
+    s += '<g class="grid">';
+    for (var gx=0; gx<=10; gx++){ s += '<line x1="'+X(gx/10)+'" x2="'+X(gx/10)+'" y1="'+Y(1)+'" y2="'+Y(0)+'"/>'; }
+    for (var gy=0; gy<=5; gy++){ s += '<line x1="'+X(0)+'" x2="'+X(1)+'" y1="'+Y(gy/5)+'" y2="'+Y(gy/5)+'"/>'; }
+    s += '</g>';
+    /* faixa fora da conta */
+    var hx = X(0), hw = X(p0.r)-X(0), hy = Y(p0.p), hh = Y(0)-Y(p0.p);
+    s += '<rect x="'+hx+'" y="'+hy.toFixed(1)+'" width="'+hw.toFixed(1)+'" height="'+hh.toFixed(1)+'" style="fill:url(#aphatch);opacity:.6"/>';
+    s += '<text class="note" transform="translate('+(hx+hw/2+4).toFixed(1)+' '+(Y(0)-8)+') rotate(-90)" text-anchor="start">não soma</text>';
+    /* retângulos */
+    Md.steps.forEach(function(sp,i){
+      var idx = i+1, x = X(sp.from), w = X(sp.to)-x, y = Y(sp.p), h = Y(0)-y, style;
+      if (idx < st.k) style = 'fill:'+Md.soft+';stroke:'+Md.color+';stroke-width:1';
+      else if (idx === st.k) style = 'fill:'+Md.color+';fill-opacity:.42;stroke:'+Md.color+';stroke-width:2.4';
+      else style = 'fill:none;stroke:var(--muted);stroke-opacity:.45;stroke-width:1;stroke-dasharray:3 3';
+      s += '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+h.toFixed(1)+'" style="'+style+'"/>';
+      if (idx <= st.k && w >= 40) s += '<text class="alab'+(idx===st.k?' cur':'')+'" x="'+(x+w/2).toFixed(1)+'" y="'+((y+Y(0))/2+4).toFixed(1)+'" text-anchor="middle">'+f4(sp.area)+'</text>';
+    });
+    /* eixos */
+    s += '<g class="ax">';
+    for (var tx=0; tx<=10; tx++){ s += '<text x="'+X(tx/10)+'" y="'+(Y(0)+17)+'" text-anchor="middle">'+fmt(tx/10,1)+'</text>'; }
+    for (var ty=0; ty<=5; ty++){ s += '<text x="'+(X(0)-8)+'" y="'+(Y(ty/5)+4)+'" text-anchor="end">'+fmt(ty/5,1)+'</text>'; }
+    s += '<text x="'+((X(0)+X(1))/2)+'" y="'+(H-5)+'" text-anchor="middle">Recall</text>';
+    s += '<text transform="translate(13 '+((Y(0)+Y(1))/2)+') rotate(-90)" text-anchor="middle">Precision</text>';
+    s += '</g>';
+    /* curva */
+    var d = Md.pts.map(function(q,i){return (i?'L':'M')+X(q.r).toFixed(1)+' '+Y(q.p).toFixed(1);}).join(' ');
+    s += '<path d="'+d+'" style="fill:none;stroke:'+Md.color+';stroke-width:2;stroke-linejoin:round"/>';
+    Md.pts.forEach(function(q,i){
+      var hot = (st.k>0 && (i===st.k || i===st.k-1));
+      s += '<circle cx="'+X(q.r).toFixed(1)+'" cy="'+Y(q.p).toFixed(1)+'" r="'+(hot?5:3.6)+'" style="fill:'+(hot?Md.color:'var(--surface)')+';stroke:'+Md.color+';stroke-width:2"/>';
+    });
+    s += '<text class="note" x="'+(X(p0.r)+8).toFixed(1)+'" y="'+(Y(p0.p)+16).toFixed(1)+'">início</text>';
+    apsvg.innerHTML = s;
+
+    /* explicação do degrau */
+    var t;
+    if (st.k === 0) {
+      t = 'Ponto de partida (Modelo '+st.m+'): recall '+fmt(p0.r,2)+', precision '+fmt(p0.p,2)+'\n'+
+          'O método dos slides começa a somar a partir daqui.\n'+
+          'A faixa de recall 0 até '+fmt(p0.r,2)+' (hachurada) não entra na conta.\n'+
+          'Clique em "Próximo degrau" para somar o primeiro retângulo.';
+    } else {
+      var sp = Md.steps[st.k-1];
+      var parts = Md.steps.slice(0, st.k).map(function(z){return f4(z.area);}).join(' + ');
+      t = 'Degrau '+st.k+' de '+n+': recall '+fmt(sp.from,2)+' → '+fmt(sp.to,2)+'\n'+
+          'ΔR        = '+fmt(sp.to,2)+' − '+fmt(sp.from,2)+' = '+fmt(sp.dr,2)+'\n'+
+          'Precision = '+fmt(sp.p,2)+'   (a do ponto de chegada, recall '+fmt(sp.to,2)+')\n'+
+          'Área      = '+fmt(sp.dr,2)+' × '+fmt(sp.p,2)+' = '+f4(sp.area)+'\n'+
+          'Acumulado = '+(st.k>1 ? parts+' = ' : '')+f4(sp.acc);
+      if (st.k === n) t += '\n\nAP(Modelo '+st.m+') = '+f4(Md.ap);
+    }
+    apstep.textContent = t;
+
+    /* tabela de degraus */
+    var rows = '';
+    Md.steps.forEach(function(sp,i){
+      var idx = i+1, cls = idx===st.k ? 'cur' : (idx<st.k ? 'done' : 'todo');
+      rows += '<tr class="'+cls+'"><td><button type="button" class="stepbtn" data-k="'+idx+'" aria-label="Ir para o degrau '+idx+'">'+idx+'</button></td>'+
+              '<td>'+fmt(sp.from,2)+' → '+fmt(sp.to,2)+'</td><td class="num">'+fmt(sp.dr,2)+'</td><td class="num">'+fmt(sp.p,2)+'</td>'+
+              '<td class="num">'+f4(sp.area)+'</td><td class="num">'+(idx<=st.k ? f4(sp.acc) : '')+'</td></tr>';
+    });
+    rows += '<tr class="total"><td colspan="4">AP (soma das áreas)</td><td class="num">'+f4(Md.ap)+'</td><td class="num">'+(st.k===n ? f4(Md.ap) : '')+'</td></tr>';
+    apsteps.innerHTML = rows;
+
+    apprev.disabled = st.k === 0;
+    apnext.disabled = st.k === n;
+    apall.textContent = st.k === n ? 'Recomeçar' : 'Ver resultado';
+  }
+  apprev.addEventListener('click', function(){ if (st.k>0){ st.k--; renderAP(); } });
+  apnext.addEventListener('click', function(){ if (st.k<MODELS[st.m].steps.length){ st.k++; renderAP(); } });
+  apall.addEventListener('click', function(){ var n = MODELS[st.m].steps.length; st.k = st.k===n ? 0 : n; renderAP(); });
+  ['A','B'].forEach(function(x){
+    document.getElementById('apm-'+x).addEventListener('click', function(){ if (st.m!==x){ st.m = x; st.k = 0; renderAP(); } });
+  });
+  apsteps.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.stepbtn') : null;
+    if (b){ st.k = +b.getAttribute('data-k'); renderAP(); }
+  });
+  renderAP();
 
   /* ---------- threshold simulator ---------- */
   var probs = [0.95,0.85,0.80,0.70,0.60,0.50,0.40,0.30,0.20,0.10];
@@ -1268,7 +1492,7 @@ SSE(C1) = 559,75</div><p>Comparando com C0 (170,00) e C2 (1192,67), o próximo a
   upd();
 
   /* ---------- nav highlight ---------- */
-  var ids = ['visao','mapa','plano','prova','metricas','clustering','generalizacao','estatistica','introducao','formulas','treino','checklist'];
+  var ids = ['visao','mapa','plano','prova','metricas','ap-visual','clustering','generalizacao','estatistica','introducao','formulas','treino','checklist'];
   var links = Array.prototype.slice.call(document.querySelectorAll('#sidenav a, #topnav a'));
   function onScroll(){
     var cur = ids[0];
